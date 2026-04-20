@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery – Porto Da Lua Boutique Hotel</title>
+  <meta name="description" content="Browse the full photo gallery of Porto Da Lua Boutique Hotel in Praia do Forte, Brazil. Explore our rooms, beachfront, restaurant, and tropical surroundings." />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* PAGE SPECIFIC THEME - Consistent with Accommodations */
+    :root {
+      --bg-main: #fcf8f2;
+      --bg-header: rgba(232, 219, 204, 0.9);
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--color-text);
+      font-family: 'Manrope', sans-serif;
+    }
+
+    /* --- Navbar Overrides (Matching Accommodations) --- */
+    .navbar {
+      transition: background-color 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .navbar__link {
+      font-family: 'Marcellus SC', serif;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    /* --- Hero Section --- */
+    .hero-gallery {
+      position: relative;
+      height: 60vh;
+      min-height: 450px;
+      background: url('images/gallery5.png') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-gallery__overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.35);
+    }
+
+    .hero-gallery__content {
+      position: relative;
+      z-index: 1;
+      padding-top: 80px;
+    }
+
+    .hero-gallery__subtitle {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 16px;
+    }
+
+    .hero-gallery__title {
+      font-family: 'Marcellus', serif;
+      font-size: 72px;
+      margin: 0;
+    }
+
+    /* --- Masonry-style grid --- */
+    .gallery-section {
+       padding: 80px 0;
+    }
+
+    .gallery-page__grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 48px;
+      columns: 3 320px; /* Wider columns for a more premium feel */
+      column-gap: 30px;
+    }
+
+    .gallery-page__cell {
+      break-inside: avoid;
+      margin-bottom: 30px;
+      border-radius: var(--br-16);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      cursor: zoom-in;
+      position: relative;
+      display: block;
+      background: white;
+    }
+
+    .gallery-page__cell img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .gallery-page__cell:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-page__cell-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-page__cell:hover .gallery-page__cell-overlay {
+      background: rgba(0,0,0,0.2);
+    }
+
+    .gallery-page__cell-overlay svg {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.4s ease;
+      color: white;
+    }
+
+    .gallery-page__cell:hover .gallery-page__cell-overlay svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* --- Lightbox --- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 22, 19, 0.98);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .lightbox.is-open { display: flex; }
+
+    .lightbox__img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 8px;
+      box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+      object-fit: contain;
+      animation: lb-zoom-in 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    @keyframes lb-zoom-in {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 32px; right: 32px;
+      background: none; border: none;
+      color: white; cursor: pointer;
+      padding: 10px;
+      transition: transform 0.3s;
+    }
+
+    .lightbox__close:hover { transform: rotate(90deg); }
+
+    .lightbox__nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lightbox__nav:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+    .lightbox__nav--prev { left: 40px; }
+    .lightbox__nav--next { right: 40px; }
+
+    @media (max-width: 1024px) {
+      .hero-gallery__title { font-size: 56px; }
+      .gallery-page__grid { columns: 2 280px; padding: 0 32px; }
+      .lightbox__nav { width: 48px; height: 48px; }
+      .lightbox__nav--prev { left: 16px; }
+      .lightbox__nav--next { right: 16px; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-gallery { height: 50vh; }
+      .hero-gallery__title { font-size: 42px; }
+      .gallery-page__grid { columns: 1 100%; padding: 0 20px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <!-- Left Column: Links Stacks -->
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link active" role="listitem" style="color:#FF832A; border-bottom: 2px solid #FF832A;">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link" role="listitem">Accomodations</a>
+            <a href="restaurant.html" class="navbar__link" role="listitem">Restaurant</a>
+            <a href="activities.html" class="navbar__link" role="listitem">Activities</a>
+          </div>
+        </div>
+
+        <!-- Center Column: Logo -->
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+
+        <!-- Right Column: Actions -->
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="accommodations.html" class="navbar__link btn--book">Book Now</a>
+
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false"
+            aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="index.html#dining" class="navbar__link">Restaurant</a>
+        <a href="index.html#about" class="navbar__link">About us</a>
+        <a href="tel:+5571367611 55" class="navbar__link">Tel +55 71 3676 11 55</a>
+        <a href="accommodations.html" class="navbar__cta btn--book" style="margin-top: 8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-gallery">
+    <div class="hero-gallery__overlay"></div>
+    <div class="hero-gallery__content">
+      <h1 class="hero-gallery__title">Our Gallery</h1>
+    </div>
+  </section>
+
+  <div class="gallery-page">
+    <section class="gallery-section">
+
+    <!-- Photo grid -->
+    <main>
+      <div class="gallery-page__grid" id="gallery-grid" aria-label="Full hotel photo gallery">
+
+        <a class="gallery-page__cell" data-src="images/gallery1.png" href="#" aria-label="View photo: Beach view">
+          <img src="images/gallery1.png" alt="Tropical beach and palm trees near the hotel" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery2.png" href="#" aria-label="View photo: Hotel grounds">
+          <img src="images/gallery2.png" alt="Fresh tropical setting at Porto Da Lua" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery3.png" href="#" aria-label="View photo: Garden and pool">
+          <img src="images/gallery3.png" alt="Lush garden and pool area at Porto Da Lua" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery4.png" href="#" aria-label="View photo: Ocean terrace">
+          <img src="images/gallery4.png" alt="Outdoor terrace overlooking the ocean" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery5.png" href="#" aria-label="View photo: Beachfront">
+          <img src="images/gallery5.png" alt="Beachfront view at Porto Da Lua" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery6.png" href="#" aria-label="View photo: Scenic grounds">
+          <img src="images/gallery6.png" alt="Scenic hotel grounds" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery7.png" href="#" aria-label="View photo: Lounge">
+          <img src="images/gallery7.png" alt="Relaxing lounge at Porto Da Lua" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+        <a class="gallery-page__cell" data-src="images/gallery8.png" href="#" aria-label="View photo: Sunset">
+          <img src="images/gallery8.png" alt="Sunset views from the hotel" loading="lazy" />
+          <div class="gallery-page__cell-overlay"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </a>
+
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="footer-dark">
+    <div class="footer__inner">
+      <div class="footer__col footer__col--logo">
+        <img src="assets/logo.png" alt="Porto Da Lua Boutique Hotel logo" class="footer__logo-img" />
+      </div>
+
+      <div class="footer__col footer__col--contact">
+        <p class="footer__col-title">Contact info</p>
+        <p class="footer__contact-line">Tel: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">Whatsapp: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">
+          E-mail: <a href="mailto:reservas@portodalua.com.br">reservas@portodalua.com.br</a>
+        </p>
+      </div>
+
+      <div class="footer__col footer__col--address">
+        <p class="footer__col-title">Address</p>
+        <p class="footer__address-name">Boutique Hotel Porto da Lua</p>
+        <p class="footer__address-line">Condomínio Aldeia dos Pescadores.</p>
+        <p class="footer__address-line">Rua Martins Pescador, lote 06</p>
+        <p class="footer__address-line">Praia do Forte - Mata de São João - Ba</p>
+        <p class="footer__address-line">CEP 48280-000</p>
+      </div>
+
+      <div class="footer__col footer__col--social">
+        <div class="footer__social" aria-label="Social media links">
+          <a href="https://www.facebook.com/praiadoforte" class="footer__social-icon" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://www.instagram.com/portodaluaboutiquehotel/" class="footer__social-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://api.whatsapp.com/send/?phone=5571996258326" class="footer__social-icon" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3.5Z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+    <button class="lightbox__close" id="lb-close" aria-label="Close lightbox">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lb-prev" aria-label="Previous photo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <img class="lightbox__img" id="lb-img" src="" alt="" />
+    <button class="lightbox__nav lightbox__nav--next" id="lb-next" aria-label="Next photo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+  <script>
+    (function () {
+      // --- Hamburger Menu Toggle ---
+      const btn = document.getElementById("hamburger-btn");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(isOpen));
+        });
+        menu.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            menu.classList.remove("is-open");
+            btn.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      // --- Lightbox Logic ---
+      const cells = Array.from(document.querySelectorAll(".gallery-page__cell[data-src]"));
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lb-img");
+      const lbClose = document.getElementById("lb-close");
+      const lbPrev = document.getElementById("lb-prev");
+      const lbNext = document.getElementById("lb-next");
+      let current = 0;
+
+      const open = (index) => {
+        current = index;
+        lbImg.src = cells[current].dataset.src;
+        lbImg.alt = cells[current].querySelector("img").alt;
+        lightbox.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+      };
+
+      const close = () => {
+        lightbox.classList.remove("is-open");
+        document.body.style.overflow = "";
+      };
+
+      const prev = () => open((current - 1 + cells.length) % cells.length);
+      const next = () => open((current + 1) % cells.length);
+
+      cells.forEach((cell, i) => {
+        cell.addEventListener("click", (e) => {
+          e.preventDefault();
+          open(i);
+        });
+      });
+
+      lbClose.addEventListener("click", close);
+      lbPrev.addEventListener("click", prev);
+      lbNext.addEventListener("click", next);
+
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) close();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("is-open")) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activities – Porto Da Lua Boutique Hotel</title>
+  <meta name="description"
+    content="Discover the best activities and attractions near Porto Da Lua Boutique Hotel in Praia do Forte, Bahia. Sea turtles, lighthouse, whale watching, and more." />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-main: #fcf8f2;
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+      --bg-card: #fefbf7;
+      --green-dark: #1e2a22;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--color-text);
+      font-family: "Manrope", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar__link {
+      font-family: "Marcellus SC", serif;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    /* ── Hero ── */
+    .hero-activities {
+      position: relative;
+      height: 60vh;
+      min-height: 450px;
+      background: url("images/gallery5.png") no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-activities__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-activities__content {
+      position: relative;
+      z-index: 1;
+      padding-top: 80px;
+    }
+
+    .hero-activities__subtitle {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 16px;
+    }
+
+    .hero-activities__title {
+      font-family: "Marcellus", serif;
+      font-size: 64px;
+      margin: 0;
+    }
+
+    .hero-activities__desc {
+      max-width: 600px;
+      margin: 20px auto 0;
+      font-size: 16px;
+      line-height: 1.7;
+      opacity: 0.9;
+    }
+
+    /* ── Intro ── */
+    .activities-intro {
+      max-width: 800px;
+      margin: 70px auto 0;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .activities-intro__title {
+      font-family: "Marcellus", serif;
+      font-size: 36px;
+      margin: 0 0 16px;
+    }
+
+    .activities-intro__desc {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    /* ── Activity Cards ── */
+    .activities-grid {
+      max-width: 1300px;
+      margin: 56px auto 80px;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .activity-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+      transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.4s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+    }
+
+    .activity-card__img-wrap {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .activity-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .activity-card:hover .activity-card__img {
+      transform: scale(1.06);
+    }
+
+    .activity-card__badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--color-orange);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .activity-card__body {
+      padding: 28px 28px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-card__title {
+      font-family: "Marcellus", serif;
+      font-size: 22px;
+      margin: 0 0 10px;
+    }
+
+    .activity-card__desc {
+      font-size: 14px;
+      color: #777;
+      line-height: 1.7;
+      margin: 0 0 20px;
+      flex: 1;
+    }
+
+    .activity-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 18px;
+    }
+
+    .activity-card__meta svg {
+      flex-shrink: 0;
+      color: var(--color-orange);
+    }
+
+    .activity-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-orange);
+      text-decoration: none;
+      transition: gap 0.3s;
+    }
+
+    .activity-card__link:hover {
+      gap: 14px;
+    }
+
+    .activity-card__link svg {
+      transition: transform 0.3s;
+    }
+
+    .activity-card__link:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .activities-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-activities__title {
+        font-size: 48px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .activities-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-activities {
+        height: 45vh;
+      }
+
+      .hero-activities__title {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ── Navbar ── -->
+  <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link" role="listitem">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link" role="listitem">Accomodations</a>
+            <a href="restaurant.html" class="navbar__link" role="listitem">Restaurant</a>
+            <a href="activities.html" class="navbar__link" role="listitem"
+              style="color: #ff832a; border-bottom: 2px solid #ff832a">Activities</a>
+          </div>
+        </div>
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="accommodations.html" class="navbar__link btn--book">Book Now</a>
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false"
+            aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="restaurant.html" class="navbar__link">Restaurant</a>
+        <a href="activities.html" class="navbar__link">Activities</a>
+        <a href="about.html" class="navbar__link">About us</a>
+        <a href="accommodations.html" class="navbar__cta btn--book" style="margin-top: 8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero-activities">
+    <div class="hero-activities__overlay"></div>
+    <div class="hero-activities__content">
+      <h1 class="hero-activities__title">Activities</h1>
+      <p class="hero-activities__desc">
+        Discover unforgettable experiences just steps from our door
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Intro ── -->
+  <div class="activities-intro">
+    <h2 class="activities-intro__title">What to do in Praia do Forte</h2>
+    <p class="activities-intro__desc">
+      Our corner of Bahia offers a wealth of natural wonders and cultural
+      experiences. Whether you're looking for adventure or tranquillity, we've
+      curated the best local activities for our guests.
+    </p>
+  </div>
+
+  <!-- ── Activity Cards ── -->
+  <section class="activities-grid">
+    <!-- Projeto TAMAR -->
+    <article class="activity-card">
+      <div class="activity-card__img-wrap">
+        <img src="images/Turtle.jpg" alt="Sea turtles at Projeto TAMAR" class="activity-card__img" />
+        <span class="activity-card__badge">Must See</span>
+      </div>
+      <div class="activity-card__body">
+        <h3 class="activity-card__title">Projeto TAMAR</h3>
+        <p class="activity-card__desc">
+          Brazil's pioneering sea turtle conservation centre, right in Praia
+          do Forte. Watch hatchlings, learn about marine biology, and see
+          rescued turtles up close.
+        </p>
+        <div class="activity-card__meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          5 min walk from hotel
+        </div>
+        <a href="https://www.tripadvisor.com/Attraction_Review-g1949173-d8470381-Reviews-Projeto_Tamar-Arembepe_State_of_Bahia.html"
+          target="_blank" rel="noopener noreferrer" class="activity-card__link">
+          Visit Website
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Garcia D'Ávila Castle -->
+    <article class="activity-card">
+      <div class="activity-card__img-wrap">
+        <img src="images/castle.jpg" alt="Castelo Garcia D'Ávila ruins" class="activity-card__img" />
+        <span class="activity-card__badge">Historic</span>
+      </div>
+      <div class="activity-card__body">
+        <h3 class="activity-card__title">Castelo Garcia D'Ávila</h3>
+        <p class="activity-card__desc">
+          The only medieval-style castle in the Americas. Explore the ruins of
+          this 16th-century Portuguese fortress perched on a hilltop with
+          panoramic ocean views.
+        </p>
+        <div class="activity-card__meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          10 min drive
+        </div>
+        <a href="https://www.tripadvisor.com/Attraction_Review-g303267-d2412928-Reviews-Castelo_da_Torre_de_Garcia_D_Avila-Mata_de_Sao_Joao_State_of_Bahia.html"
+          target="_blank" rel="noopener noreferrer" class="activity-card__link">
+          Visit Website
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Instituto Baleia Jubarte (Whale Watching) -->
+    <article class="activity-card">
+      <div class="activity-card__img-wrap">
+        <img src="images/whale.jpg" alt="Humpback whale watching in Bahia" class="activity-card__img" />
+        <span class="activity-card__badge">Seasonal</span>
+      </div>
+      <div class="activity-card__body">
+        <h3 class="activity-card__title">Whale Watching</h3>
+        <p class="activity-card__desc">
+          From July to November, humpback whales migrate to the warm waters of
+          Bahia. Take a guided boat tour with the Instituto Baleia Jubarte for
+          an unforgettable encounter.
+        </p>
+        <div class="activity-card__meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          Praia do Forte harbour
+        </div>
+        <a href="https://www.tripadvisor.com/Attractions-g303251-Activities-c61-t188-State_of_Bahia.html"
+          target="_blank" rel="noopener noreferrer" class="activity-card__link">
+          Visit Website
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Natural Pools & Snorkeling -->
+    <article class="activity-card">
+      <div class="activity-card__img-wrap">
+        <img src="images/snorkling.webp" alt="Natural tide pools for snorkeling" class="activity-card__img" />
+      </div>
+      <div class="activity-card__body">
+        <h3 class="activity-card__title">Natural Pools & Snorkelling</h3>
+        <p class="activity-card__desc">
+          At low tide, crystal-clear natural pools form along the reef,
+          creating a perfect spot for snorkelling among tropical fish and
+          starfish. Equipment available at our front desk.
+        </p>
+        <div class="activity-card__meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          Right on our beach
+        </div>
+        <a href="https://www.tripadvisor.com/Attractions-g303251-Activities-c61-t194-State_of_Bahia.html"
+          target="_blank" rel="noopener noreferrer" class="activity-card__link">
+          Learn More
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Horseback Riding -->
+    <article class="activity-card">
+      <div class="activity-card__img-wrap">
+        <img src="images/horse.jpg" alt="Horseback riding on the beach" class="activity-card__img" />
+      </div>
+      <div class="activity-card__body">
+        <h3 class="activity-card__title">Horseback Riding</h3>
+        <p class="activity-card__desc">
+          Ride along the stunning coastline at sunset on horseback. Guided
+          tours take you through coconut groves, river crossings, and empty
+          stretches of white sand beach.
+        </p>
+        <div class="activity-card__meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          Arranged via front desk
+        </div>
+        <a href="https://www.tripadvisor.com/Attractions-g303251-Activities-c61-t62-State_of_Bahia.html" target="_blank"
+          rel="noopener noreferrer" class="activity-card__link">
+          Learn More
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Reserva Sapiranga -->
+    <article class="activity-card">
+      <div class="activity-card__img-wrap">
+        <img src="images/reserva.jpg" alt="Atlantic Forest trail at Reserva Sapiranga" class="activity-card__img" />
+        <span class="activity-card__badge">Nature</span>
+      </div>
+      <div class="activity-card__body">
+        <h3 class="activity-card__title">Reserva Sapiranga</h3>
+        <p class="activity-card__desc">
+          600 hectares of protected Atlantic Forest with hiking trails,
+          kayaking on the Pojuca River, and zip-lining through the canopy. A
+          true eco-adventure.
+        </p>
+        <div class="activity-card__meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          15 min drive
+        </div>
+        <a href="https://www.tripadvisor.com/Attraction_Review-g660717-d2412930-Reviews-Reserva_de_Sapiranga-Praia_do_Forte_Mata_de_Sao_Joao_State_of_Bahia.html"
+          target="_blank" rel="noopener noreferrer" class="activity-card__link">
+          Learn More
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </article>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer-dark">
+    <div class="footer__inner">
+      <div class="footer__col footer__col--logo">
+        <img src="assets/logo.png" alt="Porto Da Lua Boutique Hotel logo" class="footer__logo-img" />
+      </div>
+      <div class="footer__col footer__col--contact">
+        <p class="footer__col-title">Contact info</p>
+        <p class="footer__contact-line">Tel: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">Whatsapp: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">
+          E-mail:
+          <a href="mailto:reservas@portodalua.com.br">reservas@portodalua.com.br</a>
+        </p>
+      </div>
+      <div class="footer__col footer__col--address">
+        <p class="footer__col-title">Address</p>
+        <p class="footer__address-name">Boutique Hotel Porto da Lua</p>
+        <p class="footer__address-line">Condomínio Aldeia dos Pescadores.</p>
+        <p class="footer__address-line">Rua Martins Pescador, lote 06</p>
+        <p class="footer__address-line">
+          Praia do Forte - Mata de São João - Ba
+        </p>
+        <p class="footer__address-line">CEP 48280-000</p>
+      </div>
+      <div class="footer__col footer__col--social">
+        <div class="footer__social">
+          <a href="https://www.facebook.com/praiadoforte" class="footer__social-icon" target="_blank"
+            rel="noopener noreferrer" aria-label="Facebook"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg></a>
+          <a href="https://www.instagram.com/portodaluaboutiquehotel/" class="footer__social-icon" target="_blank"
+            rel="noopener noreferrer" aria-label="Instagram"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg></a>
+          <a href="https://api.whatsapp.com/send/?phone=5571996258326" class="footer__social-icon" target="_blank"
+            rel="noopener noreferrer" aria-label="WhatsApp"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3.5Z" />
+            </svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const btn = document.getElementById("hamburger-btn");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(isOpen));
+        });
+        menu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            menu.classList.remove("is-open");
+            btn.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmed – Porto Da Lua Boutique Hotel</title>
+  <meta name="description" content="Your reservation at Porto Da Lua Boutique Hotel is confirmed. We look forward to welcoming you." />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-main: #fcf8f2;
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+      --form-bg: #ffffff;
+      --form-border: #e8ddd4;
+      --summary-bg: #1e2a22;
+      --green: #4caf87;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-main);
+      font-family: 'Manrope', sans-serif;
+      color: var(--color-text);
+      margin: 0; padding: 0;
+    }
+
+    .navbar { transition: background-color 0.3s ease; }
+    .navbar__link { font-family: 'Marcellus SC', serif; font-size: 18px; text-transform: uppercase; }
+
+    /* ── Progress Bar ── */
+    .progress-bar {
+      background: var(--form-bg);
+      border-bottom: 1px solid var(--form-border);
+      padding: 18px 48px;
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      margin-top: 180px;
+    }
+    .progress-step { display: flex; align-items: center; gap: 10px; }
+    .progress-step__dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .progress-step__dot--done     { background: var(--green); color: white; }
+    .progress-step__dot--inactive { background: #e0d8d0; color: #888; }
+    .progress-step__label         { font-size: 13px; font-weight: 600; color: #888; white-space: nowrap; }
+    .progress-step__label--done   { color: var(--green); }
+    .progress-line       { width: 64px; height: 2px; background: #e0d8d0; margin: 0 10px; flex-shrink: 0; }
+    .progress-line--done { background: var(--green); }
+
+    /* ── Hero ── */
+    .confirmation-hero {
+      text-align: center;
+      padding: 64px 24px 0;
+    }
+
+    .check-circle {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), #2d8a62);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      box-shadow: 0 16px 48px rgba(76,175,135,0.35);
+      animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    @keyframes pop-in {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .confirmation-hero__eyebrow {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 12px;
+      animation: fade-up 0.5s 0.3s ease both;
+    }
+
+    .confirmation-hero__title {
+      font-family: 'Marcellus', serif;
+      font-size: 52px; font-weight: 400;
+      margin: 0 0 16px; line-height: 1.15;
+      animation: fade-up 0.5s 0.4s ease both;
+    }
+
+    .confirmation-hero__subtitle {
+      font-size: 17px; color: #888; line-height: 1.7; max-width: 520px;
+      margin: 0 auto 12px;
+      animation: fade-up 0.5s 0.5s ease both;
+    }
+
+    .email-sent-note {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #e8f5ee; border: 1px solid #b2dfcb;
+      border-radius: 99px; padding: 10px 20px;
+      font-size: 14px; color: #2d7a54; font-weight: 600;
+      margin-bottom: 48px;
+      animation: fade-up 0.5s 0.6s ease both;
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Booking details card ── */
+    .confirmation-layout {
+      max-width: 1000px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      animation: fade-up 0.5s 0.55s ease both;
+    }
+
+    .details-card {
+      background: var(--form-bg);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    }
+
+    .details-card__title {
+      font-family: 'Marcellus', serif; font-size: 22px;
+      margin: 0 0 28px; color: var(--color-text);
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--form-border);
+    }
+
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid #f0ebe4;
+      gap: 16px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row__label {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; color: #aaa; flex-shrink: 0;
+      min-width: 130px;
+    }
+    .detail-row__value { font-size: 15px; font-weight: 600; color: var(--color-text); text-align: right; }
+
+    .ref-box {
+      background: #fef9ef; border: 1px solid #ede0ca;
+      border-radius: 14px; padding: 24px 28px; margin-bottom: 28px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .ref-box__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .ref-box__code  { font-family: 'Marcellus', serif; font-size: 30px; letter-spacing: 4px; color: var(--color-text); }
+    .ref-box__copy  { background: #f5ece0; border: none; border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 700; color: var(--color-orange); cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
+    .ref-box__copy:hover { background: #ede0c8; }
+
+    /* ── Room card ── */
+    .room-summary-card {
+      background: var(--summary-bg);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.2);
+      color: white;
+    }
+    .room-summary-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .room-summary-card__body { padding: 24px; }
+    .room-summary-card__label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+    .room-summary-card__title { font-family: 'Marcellus', serif; font-size: 19px; margin: 0 0 20px; color: white; }
+    .room-summary-card__divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 16px 0; }
+    .room-summary-card__row { display: flex; justify-content: space-between; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+    .room-summary-card__row span:last-child { color: white; font-weight: 600; }
+    .room-summary-card__total { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+    .room-summary-card__total span:first-child { font-weight: 700; color: white; }
+    .room-summary-card__total .total { font-family: 'Marcellus', serif; font-size: 26px; color: var(--color-orange); }
+
+    /* ── Action buttons ── */
+    .actions { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 17px 28px;
+      background: linear-gradient(135deg, var(--color-orange), #e07020);
+      color: white; border: none; border-radius: 12px;
+      font-family: 'Manrope', sans-serif; font-size: 16px; font-weight: 700;
+      text-decoration: none; cursor: pointer; transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(242,139,58,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(242,139,58,0.4); }
+
+    .btn-outline {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 16px 28px;
+      background: transparent;
+      color: var(--color-text); border: 2px solid var(--form-border);
+      border-radius: 12px;
+      font-family: 'Manrope', sans-serif; font-size: 16px; font-weight: 600;
+      text-decoration: none; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--color-orange); color: var(--color-orange); }
+
+    /* ── What to expect ── */
+    .whats-next {
+      max-width: 1000px; margin: 0 auto 80px; padding: 0 24px;
+    }
+    .whats-next h2 {
+      font-family: 'Marcellus', serif; font-size: 26px; text-align: center; margin: 0 0 40px;
+    }
+    .whats-next__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .whats-next__item {
+      background: var(--form-bg); border-radius: 16px; padding: 28px 24px;
+      text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .whats-next__icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #fef0e6; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 16px;
+      color: var(--color-orange);
+    }
+    .whats-next__item h3 { font-family: 'Marcellus', serif; font-size: 18px; margin: 0 0 10px; }
+    .whats-next__item p  { font-size: 14px; color: #888; line-height: 1.6; margin: 0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .confirmation-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .confirmation-hero__title { font-size: 36px; }
+      .progress-bar { padding: 14px 20px; margin-top: 160px; }
+      .progress-step__label { display: none; }
+      .progress-line { width: 30px; }
+      .details-card { padding: 24px 20px; }
+      .whats-next__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link" role="listitem">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link" role="listitem">Accomodations</a>
+            <a href="index.html#dining" class="navbar__link" role="listitem">Restaurant</a>
+          </div>
+        </div>
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="accommodations.html" class="navbar__link btn--book">Book Now</a>
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="index.html#dining" class="navbar__link">Restaurant</a>
+        <a href="index.html#about" class="navbar__link">About us</a>
+        <a href="accommodations.html" class="navbar__cta btn--book" style="margin-top:8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+  <!-- ── Progress Bar ── -->
+  <nav class="progress-bar" aria-label="Booking progress">
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Choose Room</span>
+    </div>
+    <div class="progress-line progress-line--done"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Your Details</span>
+    </div>
+    <div class="progress-line progress-line--done"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Payment</span>
+    </div>
+    <div class="progress-line progress-line--done"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Confirmation</span>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="confirmation-hero">
+    <div class="check-circle" aria-hidden="true">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <p class="confirmation-hero__eyebrow">Booking Confirmed</p>
+    <h1 class="confirmation-hero__title">You're all set!</h1>
+    <p class="confirmation-hero__subtitle">
+      Thank you for choosing Porto Da Lua. We've received your booking and can't wait to welcome you.
+    </p>
+    <span class="email-sent-note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      A confirmation email has been sent to <span id="conf-email-display" style="margin-left:4px;">your inbox</span>
+    </span>
+  </div>
+
+  <!-- ── Details ── -->
+  <div class="confirmation-layout">
+
+    <div class="details-card">
+      <!-- Reference -->
+      <div class="ref-box">
+        <div>
+          <p class="ref-box__label">Booking Reference</p>
+          <p class="ref-box__code" id="booking-ref">PDL-000000</p>
+        </div>
+        <button class="ref-box__copy" id="copy-ref-btn" aria-label="Copy booking reference">Copy</button>
+      </div>
+
+      <h2 class="details-card__title">Reservation Summary</h2>
+
+      <div class="detail-row">
+        <span class="detail-row__label">Guest</span>
+        <span class="detail-row__value" id="conf-guest-name">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Email</span>
+        <span class="detail-row__value" id="conf-guest-email">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Phone</span>
+        <span class="detail-row__value" id="conf-guest-phone">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Room</span>
+        <span class="detail-row__value">Double Room with Sea View</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Arrival</span>
+        <span class="detail-row__value" id="conf-arrival">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Departure</span>
+        <span class="detail-row__value" id="conf-departure">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Duration</span>
+        <span class="detail-row__value" id="conf-nights">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Guests</span>
+        <span class="detail-row__value" id="conf-guests">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row__label">Total Paid</span>
+        <span class="detail-row__value" id="conf-total" style="color:var(--color-orange);font-size:18px;">—</span>
+      </div>
+
+      <div class="actions">
+        <a href="index.html" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Return to Hotel Home
+        </a>
+        <a href="accommodations.html" class="btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 012 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+          Browse Other Rooms
+        </a>
+      </div>
+    </div>
+
+    <!-- Room summary -->
+    <div class="room-summary-card">
+      <img src="images/hotel_room.png" alt="Double Room with Sea View" />
+      <div class="room-summary-card__body">
+        <p class="room-summary-card__label">Your Stay</p>
+        <h3 class="room-summary-card__title">Double Room with Sea View</h3>
+        <div class="room-summary-card__row"><span>Check-in</span><span id="card-arrival">—</span></div>
+        <div class="room-summary-card__row"><span>Check-out</span><span id="card-departure">—</span></div>
+        <div class="room-summary-card__row"><span>Guests</span><span id="card-guests">—</span></div>
+        <hr class="room-summary-card__divider" />
+        <div class="room-summary-card__row"><span>Rate/night</span><span>$156</span></div>
+        <div class="room-summary-card__row"><span id="card-nights">× 3 nights</span><span id="card-subtotal">$468</span></div>
+        <div class="room-summary-card__row"><span>Taxes</span><span id="card-taxes">$47</span></div>
+        <hr class="room-summary-card__divider" />
+        <div class="room-summary-card__total">
+          <span>Total</span>
+          <span class="total" id="card-total">$515</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── What's next ── -->
+  <section class="whats-next" aria-label="What happens next">
+    <h2>What happens next?</h2>
+    <div class="whats-next__grid">
+      <div class="whats-next__item">
+        <div class="whats-next__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h3>Confirmation Email</h3>
+        <p>You'll receive a full booking summary and receipt in your inbox within a few minutes.</p>
+      </div>
+      <div class="whats-next__item">
+        <div class="whats-next__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 7.68 19.79 19.79 0 01.07 5a2 2 0 012-2.18h3a2 2 0 012 1.72c.13.96.32 1.9.61 2.81a2 2 0 01-.45 2.11L6.91 10.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.91.29 1.85.48 2.81.61A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <h3>Pre-Arrival Contact</h3>
+        <p>Our team will reach out 48 hours before your arrival to confirm details and special requests.</p>
+      </div>
+      <div class="whats-next__item">
+        <div class="whats-next__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Check-In at the Hotel</h3>
+        <p>Arrive from 14:00 and present your booking reference at reception. We'll handle the rest.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      // Hamburger
+      const btn = document.getElementById("hamburger-btn");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(isOpen));
+        });
+      }
+
+      // ── Restore session data ──
+      const stored = JSON.parse(sessionStorage.getItem("porto_booking_data") || "{}");
+      const g      = stored.guest || {};
+      const nights = stored.nights || 3;
+      const ref    = stored.bookingRef || ("PDL-" + Math.random().toString(36).substring(2,8).toUpperCase());
+
+      // Pricing
+      const rate  = 156;
+      const sub   = rate * nights;
+      const taxes = Math.round(sub * 0.1);
+      const total = sub + taxes;
+
+      // Reference
+      document.getElementById("booking-ref").textContent = ref;
+
+      // Email display
+      if (g.email) {
+        document.getElementById("conf-email-display").textContent = g.email;
+      }
+
+      // Detail rows
+      const fullName = `${g.firstName || ""} ${g.lastName || ""}`.trim() || "—";
+      document.getElementById("conf-guest-name").textContent  = fullName;
+      document.getElementById("conf-guest-email").textContent = g.email  || "—";
+      document.getElementById("conf-guest-phone").textContent = g.phone  || "—";
+      document.getElementById("conf-guests").textContent      = `${g.guests || 2} guest${(g.guests||2) != 1 ? "s" : ""}`;
+      document.getElementById("conf-nights").textContent      = `${nights} night${nights !== 1 ? "s" : ""}`;
+      document.getElementById("conf-total").textContent       = `$${total}`;
+
+      // Dates
+      const fmt = iso => iso ? new Date(iso).toLocaleDateString("en-GB", { weekday:"short", day:"numeric", month:"long", year:"numeric" }) : "—";
+      const arrival   = fmt(stored.dates?.[0]);
+      const departure = fmt(stored.dates?.[1]);
+      document.getElementById("conf-arrival").textContent   = arrival;
+      document.getElementById("conf-departure").textContent = departure;
+
+      // Short date for card
+      const shortFmt = iso => iso ? new Date(iso).toLocaleDateString("en-GB", { day:"numeric", month:"short" }) : "—";
+      document.getElementById("card-arrival").textContent   = shortFmt(stored.dates?.[0]);
+      document.getElementById("card-departure").textContent = shortFmt(stored.dates?.[1]);
+      document.getElementById("card-guests").textContent    = `${g.guests || 2} guest${(g.guests||2) != 1 ? "s" : ""}`;
+      document.getElementById("card-nights").textContent    = `× ${nights} night${nights !== 1 ? "s" : ""}`;
+      document.getElementById("card-subtotal").textContent  = `$${sub}`;
+      document.getElementById("card-taxes").textContent     = `$${taxes}`;
+      document.getElementById("card-total").textContent     = `$${total}`;
+
+      // Copy reference
+      document.getElementById("copy-ref-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText(ref).then(() => {
+          const btn = document.getElementById("copy-ref-btn");
+          btn.textContent = "Copied!";
+          btn.style.background = "#c8e6c9";
+          btn.style.color = "#2d7a54";
+          setTimeout(() => {
+            btn.textContent = "Copy";
+            btn.style.background = "";
+            btn.style.color = "";
+          }, 2000);
+        });
+      });
+
+      // Clear session so next booking starts fresh
+      // keep for now so refresh still shows data
+    })();
+  </script>
+</body>
+</html>

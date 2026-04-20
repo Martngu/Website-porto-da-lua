@@ -1,0 +1,1301 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accommodations – Porto Da Lua</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <style>
+    /* PAGE SPECIFIC THEME - Beige Palette Re-brand */
+    :root {
+      --bg-main: #fcf8f2;
+      --bg-header: rgba(232, 219, 204, 0.9);
+      --bg-card: #f5ece1;
+      --bg-white: #fefbf7;
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+      --color-grey: #666;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--color-text);
+      font-family: 'Manrope', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* --- Navbar & Header Parity --- */
+    .navbar {
+      transition: background-color 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
+    }
+
+
+
+    /* Support the Marcellus SC size 26 without breaking the shared grid centering */
+    .navbar__link {
+      font-family: 'Marcellus SC', serif;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+
+
+
+
+
+    /* --- Hero Section --- */
+    .hero-accom {
+      position: relative;
+      height: 70vh;
+      min-height: 550px;
+      background: url('images/hotel_room.png') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-accom__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-accom__content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-accom__subtitle {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 16px;
+    }
+
+    .hero-accom__title {
+      font-family: 'Marcellus', serif;
+      font-size: 64px;
+      margin: 0;
+    }
+
+    /* --- Intro Section --- */
+    .intro-section {
+      max-width: 900px;
+      margin: 80px auto;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .intro-section h1 {
+      font-family: 'Marcellus', serif;
+      font-size: 48px;
+      color: var(--color-orange);
+      margin-bottom: 24px;
+    }
+
+    .intro-section .subtitle {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .intro-section .tagline {
+      font-style: italic;
+      color: var(--color-grey);
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+
+    .intro-section .description {
+      line-height: 1.8;
+      color: #444;
+      font-size: 16px;
+      text-align: left;
+      column-count: 1;
+    }
+
+    /* --- Container --- */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* --- Filters --- */
+    .filters-wrapper {
+      margin-bottom: 60px;
+    }
+
+    .dates-pill {
+      display: inline-flex;
+      align-items: center;
+      background: #e9e0d1;
+      padding: 10px 24px;
+      border-radius: 50px;
+      gap: 12px;
+      margin-bottom: 24px;
+      font-weight: 700;
+      color: #444;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 0.5fr;
+      gap: 16px;
+      background: #e9e0d1;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .filter-box {
+      background: white;
+      border-radius: 4px;
+      /* More square as requested */
+      padding: 12px 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .filter-box:hover {
+      border-color: var(--color-orange);
+    }
+
+    .filter-box__label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      /* Smaller, uppercase label matching index */
+      color: var(--color-grey);
+      margin-bottom: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-box__icon {
+      width: 14px;
+      height: 14px;
+      color: var(--color-orange);
+      flex-shrink: 0;
+    }
+
+    .filter-box__value,
+    .filter-box__input {
+      font-weight: 700;
+      font-size: 18px;
+      text-align: left;
+      color: var(--color-text-black);
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .filter-box .chevron {
+      position: absolute;
+      right: 16px;
+      bottom: 20px;
+      width: 14px;
+      height: 14px;
+      color: #999;
+    }
+
+    /* --- Room Cards --- */
+    .ac-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+      transition: transform 0.3s ease;
+    }
+
+    .ac-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .ac-card__media {
+      flex: 0 0 380px;
+      position: relative;
+    }
+
+    .ac-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ac-card__content {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ac-card__title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 20px;
+      color: #111;
+    }
+
+    .ac-card__bullets {
+      list-style: disc;
+      padding-left: 20px;
+      margin: 0 0 24px;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .ac-card__specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .spec-item svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .ac-card__pricing {
+      flex: 0 0 220px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid rgba(0, 0, 0, 0.06);
+      text-align: center;
+    }
+
+    .ac-card__price-val {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .ac-card__disclaimer {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 30px;
+      line-height: 1.4;
+    }
+
+    .btn--see-more {
+      background: var(--color-orange);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 15px rgba(242, 139, 58, 0.3);
+    }
+
+    /* --- Newsletter --- */
+    .newsletter-section {
+      position: relative;
+      margin-top: 60px;
+      padding: 120px 0;
+      background: url('images/newsletter_bg.png') no-repeat center/cover;
+      color: white;
+      overflow: hidden;
+    }
+
+    .newsletter-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .newsletter-section__inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+    }
+
+    .newsletter-section__text h2 {
+      font-family: 'Marcellus', serif;
+      font-size: 34px;
+      margin: 0;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .newsletter-section__form {
+      flex: 0 0 450px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 8px 0 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .btn--subscribe {
+      background: white;
+      color: #111;
+      border: none;
+      padding: 14px 40px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* --- Footer --- */
+    .footer-dark {
+      background: #1a1a1a;
+      color: #999;
+      padding: 80px 40px;
+    }
+
+    .footer-dark__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 60px;
+    }
+
+    .footer-dark__col h4 {
+      color: white;
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    .footer-dark__logo img {
+      height: 75px;
+      margin-bottom: 30px;
+      filter: brightness(0) invert(1);
+    }
+
+    .footer-dark__socials {
+      display: flex;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .footer-dark__socials svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+      transition: opacity 0.2s;
+    }
+
+    .footer-dark__socials a:hover svg {
+      opacity: 0.7;
+    }
+
+    @media (max-width: 960px) {
+      .filter-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .ac-card {
+        flex-direction: column;
+      }
+
+      .ac-card__media {
+        flex: 0 0 250px;
+      }
+
+      .ac-card__pricing {
+        border-left: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 30px;
+      }
+
+      .newsletter-section__inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+      }
+
+      .newsletter-section__form {
+        flex: 1;
+        width: 100%;
+      }
+
+      .footer-dark__inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <!-- Left Column: Links Stacks -->
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link" role="listitem">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link active" role="listitem"
+              style="color:#FF832A; border-bottom: 2px solid #FF832A;">Accomodations</a>
+            <a href="restaurant.html" class="navbar__link" role="listitem">Restaurant</a>
+            <a href="activities.html" class="navbar__link" role="listitem">Activities</a>
+          </div>
+        </div>
+
+        <!-- Center Column: Logo -->
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+
+        <!-- Right Column: Actions -->
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="accommodations.html" class="navbar__link btn--book">Book Now</a>
+
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false"
+            aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="restaurant.html" class="navbar__link">Restaurant</a>
+        <a href="activities.html" class="navbar__link">Activities</a>
+        <a href="index.html#about" class="navbar__link">About us</a>
+        <a href="tel:+5571367611 55" class="navbar__link">Tel +55 71 3676 11 55</a>
+        <a href="accommodations.html" class="navbar__cta btn--book" style="margin-top: 8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+  <section class="hero-accom">
+    <div class="hero-accom__overlay"></div>
+  </section>
+
+  <section class="intro-section">
+    <h1>Our Accommodations</h1>
+    <p class="subtitle">26 rooms overlooking the ocean or lush gardens</p>
+    <p class="tagline">Where beauty meets comfort</p>
+    <div class="description">
+      <p>At Porto da Lua boutique Hotel, 26 thoughtfully designed rooms offer a calm and intimate retreat by the sea.
+      </p>
+      <p>Many open onto private balconies with sweeping ocean and reef views, while others are tucked into lush garden
+        surroundings, creating a quieter, more secluded atmosphere. Each space is shaped by natural light, ocean breeze,
+        and simple, comfortable details—inviting you to slow down, unwind, and feel truly at home.</p>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- Filters Section -->
+    <div class="ac-filters-section">
+      <!-- Standalone Dates Pill -->
+      <div class="ac-dates-pill" id="dates-trigger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span class="ac-dates-pill__label">Dates</span>
+        <span class="ac-dates-pill__value" id="display-dates">Select Dates</span>
+        <input type="text" id="datePickerFigma" style="display:none;" readonly />
+      </div>
+
+      <!-- Main Horizontal Filter Bar -->
+      <div class="ac-filter-bar">
+
+        <!-- Guests Filter -->
+        <div class="ac-filter-item" id="guests-field">
+          <svg class="ac-filter-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <div class="ac-filter-item__content">
+            <span class="ac-filter-item__label">Guests</span>
+            <span class="ac-filter-item__value" id="disp-guests">2 guests</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+
+          <!-- Dropdown logic matches index.html -->
+          <div class="guests-dropdown" id="guests-dropdown">
+            <div class="guests-dropdown__row">
+              <span class="guests-dropdown__label">Adults</span>
+              <div class="counter">
+                <button type="button" class="counter__btn" data-type="adults" data-action="minus">−</button>
+                <span class="counter__val" id="val-adults">2</span>
+                <button type="button" class="counter__btn" data-type="adults" data-action="plus">+</button>
+              </div>
+            </div>
+            <div class="guests-dropdown__row">
+              <span class="guests-dropdown__label">Children</span>
+              <div class="counter">
+                <button type="button" class="counter__btn" data-type="children" data-action="minus">−</button>
+                <span class="counter__val" id="val-children">0</span>
+                <button type="button" class="counter__btn" data-type="children" data-action="plus">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Filter with Range Slider -->
+        <div class="ac-filter-item" id="price-field">
+          <span class="ac-filter-item__icon"
+            style="font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center;">$</span>
+          <div class="ac-filter-item__content">
+            <span class="ac-filter-item__label">Filter by price</span>
+            <span class="ac-filter-item__value" id="disp-price">All prices</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+
+          <div class="guests-dropdown" id="price-dropdown" style="width: 280px; padding: 30px;">
+            <div class="price-slider-container">
+              <div class="price-slider-label">
+                <span id="price-min-val">€0</span>
+                <span id="price-max-val">€1000+</span>
+              </div>
+              <div class="range-slider">
+                <div class="range-slider__progress" id="slider-progress"></div>
+              </div>
+              <div class="range-input">
+                <input type="range" id="price-min-input" class="range-min" min="0" max="1000" value="0" step="50">
+                <input type="range" id="price-max-input" class="range-max" min="0" max="1000" value="1000" step="50">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amount of Rooms -->
+        <div class="ac-filter-item" id="room-count-field">
+          <svg class="ac-filter-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <div class="ac-filter-item__content">
+            <span class="ac-filter-item__label">Amount of rooms</span>
+            <span class="ac-filter-item__value" id="disp-room-count">1 room</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+
+          <div class="guests-dropdown" id="room-count-dropdown">
+            <div class="guests-dropdown__row">
+              <span class="guests-dropdown__label">Rooms</span>
+              <div class="counter">
+                <button type="button" class="counter__btn" data-type="rooms" data-action="minus">−</button>
+                <span class="counter__val" id="val-rooms">1</span>
+                <button type="button" class="counter__btn" data-type="rooms" data-action="plus">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Room Type Filter -->
+        <div class="ac-filter-item" id="rooms-field">
+          <svg class="ac-filter-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 4v16"></path>
+            <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+            <path d="M2 17h20"></path>
+            <path d="M6 8v9"></path>
+          </svg>
+          <div class="ac-filter-item__content">
+            <span class="ac-filter-item__label">Room type</span>
+            <span class="ac-filter-item__value" id="disp-rooms">All types</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+
+          <div class="guests-dropdown" id="rooms-dropdown" style="width: 250px;">
+            <div class="type-filter-list" style="display:flex; flex-direction:column; gap:14px; padding:10px 0;">
+              <label
+                style="display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:600; font-size:14px; color:#555;">
+                <input type="checkbox" class="type-checkbox" value="double"
+                  style="width:18px; height:18px; accent-color:#f28b3a;"> Double / Twin Room
+              </label>
+              <label
+                style="display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:600; font-size:14px; color:#555;">
+                <input type="checkbox" class="type-checkbox" value="garden"
+                  style="width:18px; height:18px; accent-color:#f28b3a;"> Standard Garden Room
+              </label>
+              <label
+                style="display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:600; font-size:14px; color:#555;">
+                <input type="checkbox" class="type-checkbox" value="family"
+                  style="width:18px; height:18px; accent-color:#f28b3a;"> Family Room
+              </label>
+              <label
+                style="display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:600; font-size:14px; color:#555;">
+                <input type="checkbox" class="type-checkbox" value="suite"
+                  style="width:18px; height:18px; accent-color:#f28b3a;"> Master Suite
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Currency Selector -->
+        <div class="ac-filter-item ac-filter-item--currency" id="currency-field"
+          style="padding: 0; border: none; background: none;">
+          <select class="form-select" id="currency-select" aria-label="Currency"
+            style="padding: 14px 44px 14px 16px; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1.5px solid #e8ddd4; background-color: #fefbf7; font-family: 'Manrope', sans-serif; cursor: pointer; min-width: 200px;">
+            <option value="BRL" data-symbol="R$" data-rate="1">R$ — Brazilian Real</option>
+            <option value="USD" data-symbol="$" data-rate="0.19" selected>$ — US Dollar</option>
+            <option value="EUR" data-symbol="€" data-rate="0.17">€ — Euro</option>
+            <option value="GBP" data-symbol="£" data-rate="0.15">£ — British Pound</option>
+            <option value="JPY" data-symbol="¥" data-rate="28.5">¥ — Japanese Yen</option>
+            <option value="CHF" data-symbol="CHF" data-rate="0.16">CHF — Swiss Franc</option>
+            <option value="CAD" data-symbol="C$" data-rate="0.26">C$ — Canadian Dollar</option>
+            <option value="AUD" data-symbol="A$" data-rate="0.29">A$ — Australian Dollar</option>
+            <option value="CNY" data-symbol="¥" data-rate="1.38">¥ — Chinese Yuan</option>
+            <option value="DKK" data-symbol="kr" data-rate="1.29">kr — Danish Krone</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Room List -->
+    <div class="room-list">
+
+      <!-- Card 1 -->
+      <div class="ac-card" data-room-type="double">
+        <div class="ac-card__media">
+          <img src="images/hotel_room.png" alt="Double Room with Sea View" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Double Room with Sea View</h3>
+          <ul class="ac-card__bullets">
+            <li>1 large double comfy bed</li>
+            <li>Up to 2 guests.</li>
+            <li>21m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg> 2 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Breakfast included</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Accessible</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="1300">247$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="ac-card" data-room-type="garden">
+        <div class="ac-card__media">
+          <img src="images/garden.png" alt="Standard Garden Room" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Standard Garden Room</h3>
+          <ul class="ac-card__bullets">
+            <li>1 large double bed</li>
+            <li>Peaceful garden views.</li>
+            <li>18m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg> 2 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Breakfast included</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="1050">199$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="ac-card" data-room-type="family">
+        <div class="ac-card__media">
+          <img src="images/beachview.png" alt="Family Beach Room" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Beach View Family Room</h3>
+          <ul class="ac-card__bullets">
+            <li>1 double bed & 2 single beds</li>
+            <li>Direct beach access.</li>
+            <li>32m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg> 4 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Breakfast included</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="2350">446$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="ac-card" data-room-type="suite">
+        <div class="ac-card__media">
+          <img src="images/mastersuite.png" alt="Master Suite" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Master Suite</h3>
+          <ul class="ac-card__bullets">
+            <li>Kingsize bed & lounge area</li>
+            <li>Panoramic sea views.</li>
+            <li>45m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg> 2 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Premium Breakfast</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Hi-Speed Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="4700">893$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="ac-card" data-room-type="garden">
+        <div class="ac-card__media">
+          <img src="images/gallery2.png" alt="Deluxe Garden Room" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Deluxe Garden Room</h3>
+          <ul class="ac-card__bullets">
+            <li>1 large double bed</li>
+            <li>Private garden patio.</li>
+            <li>24m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg> 2 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Breakfast included</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="1400">266$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="ac-card" data-room-type="suite">
+        <div class="ac-card__media">
+          <img src="images/gallery9.png" alt="Corner Suite" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Corner Suite</h3>
+          <ul class="ac-card__bullets">
+            <li>Wraparound balcony</li>
+            <li>Ocean and reef views.</li>
+            <li>36m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg> 2 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Premium Breakfast</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Hi-Speed Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="3000">570$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="ac-card" data-room-type="suite">
+        <div class="ac-card__media">
+          <img src="images/gallery10.png" alt="Honeymoon Suite" class="ac-card__img" />
+        </div>
+        <div class="ac-card__content">
+          <h3 class="ac-card__title">Honeymoon Suite</h3>
+          <ul class="ac-card__bullets">
+            <li>Private jacuzzi</li>
+            <li>Unobstructed sea views.</li>
+            <li>50m² on average</li>
+          </ul>
+          <div class="ac-card__specs">
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg> 2 guests</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg> Premium Breakfast</div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg> Hi-Speed Wi-fi</div>
+          </div>
+        </div>
+        <div class="ac-card__pricing">
+          <div class="ac-card__price-val" data-base-price="5200">988$</div>
+          <div class="ac-card__disclaimer">Prices may vary<br />depending on date.</div>
+          <a href="room-details.html" class="btn--see-more">See More</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <section class="newsletter-banner" aria-label="Newsletter subscription">
+    <div class="newsletter-banner__content">
+      <h2 class="newsletter-banner__title">Stay in touch with us</h2>
+      <div class="newsletter-banner__form">
+        <input type="email" class="newsletter-banner__input" placeholder="Enter email" aria-label="Email address" />
+        <input type="text" class="newsletter-banner__input" placeholder="Name" aria-label="Your name" />
+        <button type="button" class="newsletter-banner__btn">Subscribe </button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-dark">
+    <div class="footer__inner">
+      <!-- Col 1: Logo -->
+      <div class="footer__col footer__col--logo">
+        <img src="assets/logo.png" alt="Porto Da Lua Boutique Hotel logo" class="footer__logo-img" />
+      </div>
+
+      <!-- Col 2: Contact Info -->
+      <div class="footer__col footer__col--contact">
+        <p class="footer__col-title">Contact info</p>
+        <p class="footer__contact-line">Tel: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">Whatsapp: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">
+          E-mail: <a href="mailto:reservas@portodalua.com.br">reservas@portodalua.com.br</a>
+        </p>
+      </div>
+
+      <!-- Col 3: Address -->
+      <div class="footer__col footer__col--address">
+        <p class="footer__col-title">Address</p>
+        <p class="footer__address-name">Boutique Hotel Porto da Lua</p>
+        <p class="footer__address-line">Condomínio Aldeia dos Pescadores.</p>
+        <p class="footer__address-line">Rua Martins Pescador, lote 06</p>
+        <p class="footer__address-line">Praia do Forte - Mata de São João - Ba</p>
+        <p class="footer__address-line">CEP 48280-000</p>
+      </div>
+
+      <!-- Col 4: Socials -->
+      <div class="footer__col footer__col--social">
+        <div class="footer__social" aria-label="Social media links">
+          <a href="https://www.facebook.com/praiadoforte" class="footer__social-icon" target="_blank"
+            rel="noopener noreferrer" aria-label="Facebook">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/portodaluaboutiquehotel/" class="footer__social-icon" target="_blank"
+            rel="noopener noreferrer" aria-label="Instagram">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://api.whatsapp.com/send/?phone=5571996258326" class="footer__social-icon" target="_blank"
+            rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3.5Z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    (function () {
+      // --- Hamburger Menu Toggle ---
+      const btn = document.getElementById("hamburger-btn");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(isOpen));
+        });
+        menu.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            menu.classList.remove("is-open");
+            btn.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      // --- Flatpickr Initialization ---
+      const dateDisplay = document.getElementById("display-dates");
+      const dateInput = document.getElementById("datePickerFigma");
+      const flatObj = flatpickr(dateInput, {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "d/m",
+        static: true,
+        appendTo: document.querySelector(".ac-dates-pill"),
+        onChange: (selectedDates) => {
+          if (selectedDates.length === 2) {
+            const val = flatpickr.formatDate(selectedDates[0], "d/m") + " — " + flatpickr.formatDate(selectedDates[1], "d/m");
+            dateDisplay.innerText = val;
+            syncBookingData();
+          }
+        }
+      });
+      document.getElementById("dates-trigger").addEventListener("click", () => flatObj.open());
+
+      // --- Dropdown Toggles ---
+      const fields = ["guests-field", "room-count-field", "rooms-field", "price-field"];
+      const dropdowns = ["guests-dropdown", "room-count-dropdown", "rooms-dropdown", "price-dropdown"];
+
+      fields.forEach((id, idx) => {
+        const field = document.getElementById(id);
+        const dropdown = document.getElementById(dropdowns[idx]);
+        if (!field || !dropdown) return;
+        field.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const alreadyOpen = dropdown.classList.contains("is-open");
+          closeAllDropdowns();
+          if (!alreadyOpen) dropdown.classList.add("is-open");
+        });
+      });
+
+      function closeAllDropdowns() {
+        dropdowns.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.remove("is-open");
+        });
+      }
+      document.addEventListener("click", () => closeAllDropdowns());
+      dropdowns.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("click", (e) => e.stopPropagation());
+      });
+
+      // --- Guests & Rooms Counters ---
+      const counts = { adults: 2, children: 0, rooms: 1 };
+      const counterBtns = document.querySelectorAll(".counter__btn");
+      counterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const type = btn.getAttribute("data-type");
+          const action = btn.getAttribute("data-action");
+          if (action === "plus") counts[type]++;
+          else if (action === "minus") {
+            if (counts[type] > (type === "children" ? 0 : 1)) counts[type]--;
+          }
+          document.getElementById(`val-${type}`).innerText = counts[type];
+          updateDisplays();
+          syncBookingData();
+        });
+      });
+
+      function updateDisplays() {
+        const totalGuests = counts.adults + counts.children;
+        document.getElementById("disp-guests").innerText = `${totalGuests} guest${totalGuests !== 1 ? 's' : ''}`;
+        document.getElementById("disp-room-count").innerText = `${counts.rooms} room${counts.rooms !== 1 ? 's' : ''}`;
+      }
+
+      // --- Price Range Slider ---
+      const minInput = document.getElementById("price-min-input");
+      const maxInput = document.getElementById("price-max-input");
+      const minLabel = document.getElementById("price-min-val");
+      const maxLabel = document.getElementById("price-max-val");
+      const progress = document.getElementById("slider-progress");
+      const dispPrice = document.getElementById("disp-price");
+
+      function updatePriceSlider() {
+        let minVal = parseInt(minInput.value);
+        let maxVal = parseInt(maxInput.value);
+
+        if (maxVal - minVal < 50) {
+          if (this === minInput) minInput.value = maxVal - 50;
+          else maxInput.value = minVal + 50;
+        }
+
+        const minPercent = (minInput.value / minInput.max) * 100;
+        const maxPercent = 100 - (maxInput.value / maxInput.max) * 100;
+        progress.style.left = minPercent + "%";
+        progress.style.right = maxPercent + "%";
+
+        minLabel.innerText = `${currentSymbol}${minInput.value}`;
+        maxLabel.innerText = `${currentSymbol}${maxInput.value}${maxInput.value == 1000 ? "+" : ""}`;
+        dispPrice.innerText = `${currentSymbol}${minInput.value} - ${currentSymbol}${maxInput.value}`;
+
+        filterRoomsByPrice(minInput.value, maxInput.value);
+      }
+
+      minInput.addEventListener("input", updatePriceSlider);
+      maxInput.addEventListener("input", updatePriceSlider);
+
+      function filterRoomsByPrice(min, max) {
+        // Collect active types
+        const typeCheckboxes = Array.from(document.querySelectorAll('.type-checkbox'));
+        const activeTypes = typeCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
+
+        // Update display text
+        const dispRooms = document.getElementById('disp-rooms');
+        if (activeTypes.length === 0 || activeTypes.length === 4) {
+          dispRooms.innerText = "All types";
+        } else if (activeTypes.length === 1) {
+          const typeName = typeCheckboxes.find(cb => cb.checked).parentNode.textContent.trim();
+          dispRooms.innerText = typeName;
+        } else {
+          dispRooms.innerText = `${activeTypes.length} selected`;
+        }
+
+        const cards = document.querySelectorAll(".ac-card");
+        cards.forEach(card => {
+          const base = parseFloat(card.querySelector(".ac-card__price-val").getAttribute("data-base-price"));
+          const converted = Math.round(base * rates[currentCurrency]);
+          const roomType = card.getAttribute("data-room-type");
+
+          const priceMatch = converted >= min && (max == 1000 || converted <= max);
+          const typeMatch = activeTypes.length === 0 || activeTypes.includes(roomType);
+
+          if (priceMatch && typeMatch) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+
+      // Add event listeners to checkboxes
+      document.querySelectorAll('.type-checkbox').forEach(cb => {
+        cb.addEventListener('change', () => {
+          const min = parseInt(minInput.value);
+          const max = parseInt(maxInput.value);
+          filterRoomsByPrice(min, max);
+        });
+      });
+
+      // --- Currency & Conversion ---
+      let currentCurrency = "USD";
+      let currentSymbol = "$";
+      const rates = { BRL: 1, USD: 0.19, EUR: 0.17, GBP: 0.15, JPY: 28.5, CHF: 0.16, CAD: 0.26, AUD: 0.29, CNY: 1.38, DKK: 1.29 };
+
+      const currSelect = document.getElementById("currency-select");
+      currSelect.addEventListener("change", () => {
+        const opt = currSelect.options[currSelect.selectedIndex];
+        currentCurrency = currSelect.value;
+        currentSymbol = opt.dataset.symbol;
+        updatePrices();
+        updatePriceSlider();
+        syncBookingData();
+      });
+
+      function updatePrices() {
+        const priceEls = document.querySelectorAll(".ac-card__price-val");
+        priceEls.forEach(el => {
+          const base = parseFloat(el.getAttribute("data-base-price"));
+          const converted = Math.round(base * rates[currentCurrency]);
+          el.innerText = `${converted}${currentSymbol}`;
+        });
+      }
+
+      // --- Persistence ---
+      function syncBookingData() {
+        const data = {
+          dates: flatObj.selectedDates.map(d => d.toISOString()),
+          counts: counts,
+          currency: currentCurrency
+        };
+        sessionStorage.setItem('porto_booking_data', JSON.stringify(data));
+      }
+
+      function loadBookingData() {
+        const stored = sessionStorage.getItem('porto_booking_data');
+        if (stored) {
+          try {
+            const data = JSON.parse(stored);
+            if (data.dates && data.dates.length >= 2) {
+              const d1 = new Date(data.dates[0]);
+              const d2 = new Date(data.dates[1]);
+              flatObj.setDate([d1, d2], true);
+              dateDisplay.innerText = flatpickr.formatDate(d1, "d/m") + " — " + flatpickr.formatDate(d2, "d/m");
+            }
+            if (data.counts) {
+              Object.assign(counts, data.counts);
+              ['adults', 'children', 'rooms'].forEach(t => {
+                const el = document.getElementById(`val-${t}`);
+                if (el) el.innerText = counts[t];
+              });
+              updateDisplays();
+            }
+            if (data.currency && rates[data.currency]) {
+              currSelect.value = data.currency;
+              const opt = currSelect.options[currSelect.selectedIndex];
+              if (opt) {
+                currentCurrency = data.currency;
+                currentSymbol = opt.dataset.symbol;
+                updatePrices();
+                updatePriceSlider();
+              }
+            }
+          } catch (e) { console.error(e); }
+        }
+      }
+
+      setTimeout(loadBookingData, 100);
+      updatePriceSlider();
+    })();
+  </script>
+</body>
+
+</html>

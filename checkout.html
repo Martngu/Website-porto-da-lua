@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Details – Porto Da Lua Boutique Hotel</title>
+  <meta name="description" content="Complete your reservation at Porto Da Lua Boutique Hotel. Fill in your details to proceed to payment." />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    :root {
+      --bg-main: #fcf8f2;
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+      --form-bg: #ffffff;
+      --form-border: #e8ddd4;
+      --input-bg: #fefbf7;
+      --summary-bg: #1e2a22;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-main);
+      font-family: 'Manrope', sans-serif;
+      color: var(--color-text);
+      margin: 0; padding: 0;
+    }
+
+    .navbar { transition: background-color 0.3s ease; }
+    .navbar__link { font-family: 'Marcellus SC', serif; font-size: 18px; text-transform: uppercase; }
+
+    /* ── Progress Bar ── */
+    .progress-bar {
+      background: var(--form-bg);
+      border-bottom: 1px solid var(--form-border);
+      padding: 18px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-top: 180px; /* Restored to clear absolute navbar */
+    }
+    .progress-step { display: flex; align-items: center; gap: 10px; }
+    .progress-step__dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .progress-step__dot--active   { background: var(--color-orange); color: white; }
+    .progress-step__dot--done     { background: #4caf87; color: white; }
+    .progress-step__dot--inactive { background: #e0d8d0; color: #888; }
+    .progress-step__label         { font-size: 13px; font-weight: 600; color: #888; white-space: nowrap; }
+    .progress-step__label--active { color: var(--color-orange); }
+    .progress-step__label--done   { color: #4caf87; }
+    .progress-line      { width: 64px; height: 2px; background: #e0d8d0; margin: 0 10px; flex-shrink: 0; }
+    .progress-line--done{ background: #4caf87; }
+
+    /* ── Layout ── */
+    .checkout-layout {
+      max-width: 1220px;
+      margin: 48px auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ── Form Panel ── */
+    .checkout-form-panel {
+      background: var(--form-bg);
+      border-radius: 20px;
+      padding: 48px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    }
+    .form-section-title    { font-family: 'Marcellus', serif; font-size: 28px; margin: 0 0 6px; }
+    .form-section-subtitle { font-size: 15px; color: #888; margin: 0 0 36px; }
+    .form-divider          { border: none; border-top: 1px solid var(--form-border); margin: 32px 0; }
+    .form-group            { margin-bottom: 22px; }
+    .form-group label      { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: #888; margin-bottom: 9px; }
+    .form-row              { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid var(--form-border);
+      border-radius: 10px;
+      background: var(--input-bg);
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px; color: var(--color-text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--color-orange);
+      box-shadow: 0 0 0 3px rgba(242,139,58,0.12);
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: #c0b8b0; }
+    .form-textarea { resize: vertical; min-height: 110px; }
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; padding-right: 44px;
+    }
+
+    /* ── Dates bar ── */
+    .dates-bar {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--form-border);
+      border-radius: 10px; background: var(--input-bg); overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer;
+    }
+    .dates-bar:focus-within { border-color: var(--color-orange); box-shadow: 0 0 0 3px rgba(242,139,58,0.12); }
+    .dates-bar__icon    { padding: 14px 14px 14px 18px; color: #bbb; display: flex; align-items: center; }
+    .dates-bar__field   { flex: 1; padding: 14px 18px 14px 0; }
+    .dates-bar__label   { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #aaa; margin-bottom: 3px; }
+    .dates-bar__value   { font-size: 15px; color: var(--color-text); font-weight: 500; }
+    .dates-bar__value--placeholder { color: #c0b8b0; }
+    .dates-bar__divider { width: 1px; height: 36px; background: var(--form-border); flex-shrink: 0; }
+
+    /* ── Policy note ── */
+    .policy-note { display: flex; align-items: flex-start; gap: 12px; background: #f0f9f0; border: 1px solid #c8e6c9; border-radius: 10px; padding: 16px 20px; margin-bottom: 28px; }
+    .policy-note svg { flex-shrink: 0; color: #4caf87; margin-top: 2px; }
+    .policy-note p { margin: 0; font-size: 13px; color: #3a7050; line-height: 1.6; }
+
+    /* ── CTA ── */
+    .checkout-cta {
+      width: 100%; padding: 18px 32px;
+      background: linear-gradient(135deg, var(--color-orange), #e07020);
+      color: white; border: none; border-radius: 12px;
+      font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 6px 24px rgba(242,139,58,0.35);
+      text-decoration: none;
+    }
+    .checkout-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(242,139,58,0.45); }
+    .checkout-cta svg { transition: transform 0.3s; }
+    .checkout-cta:hover svg { transform: translateX(4px); }
+
+    /* ── Summary Panel ── */
+    .summary-panel { position: sticky; top: 32px; }
+    .summary-card  { background: var(--summary-bg); border-radius: 20px; overflow: hidden; box-shadow: 0 16px 60px rgba(0,0,0,0.18); color: white; }
+    .summary-card__img-wrap { position: relative; height: 220px; overflow: hidden; }
+    .summary-card__img      { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .summary-card__badge    { position: absolute; top: 16px; left: 16px; background: var(--color-orange); color: white; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .summary-card__body     { padding: 28px; }
+    .summary-card__label    { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+    .summary-card__title    { font-family: 'Marcellus', serif; font-size: 22px; color: white; margin: 0 0 20px; line-height: 1.3; }
+    .summary-card__features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .summary-card__feature  { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.75); }
+    .summary-card__feature svg { flex-shrink: 0; color: var(--color-orange); }
+    .summary-card__divider  { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0; }
+    .summary-price-row       { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px; color: rgba(255,255,255,0.65); }
+    .summary-price-row span:last-child { color: white; font-weight: 600; }
+    .summary-price-total     { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+    .summary-price-total span:first-child { font-size: 15px; font-weight: 700; color: white; }
+    .total-amount { font-family: 'Marcellus', serif; font-size: 28px; color: var(--color-orange); }
+    .summary-footnote { font-size: 12px; color: rgba(255,255,255,0.35); text-align: center; margin-top: 16px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .checkout-layout { grid-template-columns: 1fr; }
+      .summary-panel { position: static; order: -1; }
+      .progress-bar { padding: 14px 20px; }
+      .checkout-hero { height: 220px; margin-top: 160px; }
+      .checkout-hero__title { font-size: 34px; }
+    }
+    @media (max-width: 768px) {
+      .progress-line { width: 30px; }
+      .progress-step__label { display: none; }
+      .checkout-form-panel { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <header>
+    <nav class="navbar navbar--with-bg" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link" role="listitem">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link" role="listitem">Accomodations</a>
+            <a href="restaurant.html" class="navbar__link" role="listitem">Restaurant</a>
+            <a href="activities.html" class="navbar__link" role="listitem">Activities</a>
+          </div>
+        </div>
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="accommodations.html" class="navbar__link btn--book">Book Now</a>
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="restaurant.html" class="navbar__link">Restaurant</a>
+        <a href="activities.html" class="navbar__link">Activities</a>
+        <a href="index.html#about" class="navbar__link">About us</a>
+        <a href="accommodations.html" class="navbar__cta btn--book" style="margin-top:8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+
+  <!-- ── Progress Bar ── -->
+  <nav class="progress-bar" aria-label="Booking progress">
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Choose Room</span>
+    </div>
+    <div class="progress-line progress-line--done"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--active">2</div>
+      <span class="progress-step__label progress-step__label--active">Your Details</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--inactive">3</div>
+      <span class="progress-step__label">Payment</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--inactive">4</div>
+      <span class="progress-step__label">Confirmation</span>
+    </div>
+  </nav>
+
+  <main class="checkout-layout">
+
+    <!-- ── Booking Form ── -->
+    <section class="checkout-form-panel" aria-labelledby="form-title">
+      <a href="room-details.html" class="btn--back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Room Details
+      </a>
+      <h1 class="form-section-title" id="form-title">Your Details</h1>
+      <p class="form-section-subtitle">Tell us a little about yourself — we'll take care of the rest.</p>
+
+      <form id="booking-form" novalidate>
+
+        <h2 style="font-family:'Marcellus',serif;font-size:17px;margin:0 0 18px;color:#888;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;">Guest Information</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" class="form-input" placeholder="e.g. Sofia" required autocomplete="given-name" />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" class="form-input" placeholder="e.g. Andrade" required autocomplete="family-name" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" class="form-input" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="form-input" placeholder="+55 71 9 0000-0000" autocomplete="tel" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nationality">Nationality</label>
+            <select id="nationality" class="form-select">
+              <option value="">Select nationality…</option>
+              <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Antigua and Barbuda</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Benin</option><option>Bhutan</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option>
+              <option selected>Brazil</option>
+              <option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option><option>Cabo Verde</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Central African Republic</option><option>Chad</option><option>Chile</option><option>China</option><option>Colombia</option><option>Comoros</option><option>Congo (Brazzaville)</option><option>Congo (Kinshasa)</option><option>Costa Rica</option><option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czech Republic</option>
+              <option>Denmark</option>
+              <option>Djibouti</option><option>Dominica</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Equatorial Guinea</option><option>Eritrea</option><option>Estonia</option><option>Eswatini</option><option>Ethiopia</option><option>Fiji</option><option>Finland</option><option>France</option><option>Gabon</option><option>Gambia</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Grenada</option><option>Guatemala</option><option>Guinea</option><option>Guinea-Bissau</option><option>Guyana</option><option>Haiti</option><option>Honduras</option><option>Hungary</option><option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kiribati</option><option>Kosovo</option><option>Kuwait</option><option>Kyrgyzstan</option><option>Laos</option><option>Latvia</option><option>Lebanon</option><option>Lesotho</option><option>Liberia</option><option>Libya</option><option>Liechtenstein</option><option>Lithuania</option><option>Luxembourg</option><option>Madagascar</option><option>Malawi</option><option>Malaysia</option><option>Maldives</option><option>Mali</option><option>Malta</option><option>Marshall Islands</option><option>Mauritania</option><option>Mauritius</option><option>Mexico</option><option>Micronesia</option><option>Moldova</option><option>Monaco</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option><option>Namibia</option><option>Nauru</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nicaragua</option><option>Niger</option><option>Nigeria</option><option>North Korea</option><option>North Macedonia</option>
+              <option>Norway</option>
+              <option>Oman</option><option>Pakistan</option><option>Palau</option><option>Palestine</option><option>Panama</option><option>Papua New Guinea</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saint Kitts and Nevis</option><option>Saint Lucia</option><option>Saint Vincent</option><option>Samoa</option><option>San Marino</option><option>Sao Tome and Principe</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Seychelles</option><option>Sierra Leone</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>Solomon Islands</option><option>Somalia</option><option>South Africa</option><option>South Korea</option><option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option><option>Suriname</option>
+              <option>Sweden</option>
+              <option>Switzerland</option><option>Syria</option><option>Taiwan</option><option>Tajikistan</option><option>Tanzania</option><option>Thailand</option><option>Timor-Leste</option><option>Togo</option><option>Tonga</option><option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option><option>Turkmenistan</option><option>Tuvalu</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option>
+              <option>United Kingdom</option>
+              <option>United States</option>
+              <option>Uruguay</option><option>Uzbekistan</option><option>Vanuatu</option><option>Vatican City</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guests-select">Number of Guests</label>
+            <select id="guests-select" class="form-select">
+              <option value="1">1 Guest</option>
+              <option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="form-divider" />
+
+        <h2 style="font-family:'Marcellus',serif;font-size:17px;margin:0 0 18px;color:#888;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;">Stay Dates</h2>
+
+        <div class="form-group">
+          <label>Arrival &amp; Departure</label>
+          <div class="dates-bar" id="dates-bar-trigger" role="button" tabindex="0" aria-label="Select dates">
+            <div class="dates-bar__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="dates-bar__field">
+              <div class="dates-bar__label">Arrival</div>
+              <div class="dates-bar__value dates-bar__value--placeholder" id="arrival-display">Select date</div>
+            </div>
+            <div class="dates-bar__divider"></div>
+            <div class="dates-bar__field" style="padding-left:18px;">
+              <div class="dates-bar__label">Departure</div>
+              <div class="dates-bar__value dates-bar__value--placeholder" id="departure-display">Select date</div>
+            </div>
+          </div>
+          <input type="text" id="date-picker-checkout" style="opacity:0;height:0;width:0;position:absolute;" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="arrival-time">Estimated Arrival Time</label>
+            <select id="arrival-time" class="form-select">
+              <option value="">Select time…</option>
+              <option>12:00 – Noon</option><option>13:00</option><option selected>14:00 – Check-in opens</option>
+              <option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
+              <option>19:00</option><option>20:00</option><option>After 20:00 (late)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rooms-select">Number of Rooms</label>
+            <select id="rooms-select" class="form-select">
+              <option value="1" selected>1 Room</option>
+              <option value="2">2 Rooms</option>
+              <option value="3">3 Rooms</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="form-divider" />
+
+        <h2 style="font-family:'Marcellus',serif;font-size:17px;margin:0 0 18px;color:#888;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;">Special Requests</h2>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="special-requests">Anything we should know?</label>
+          <textarea id="special-requests" class="form-textarea" placeholder="e.g. Vegetarian breakfast, anniversary celebration, late checkout…"></textarea>
+        </div>
+
+        <hr class="form-divider" />
+
+        <div class="policy-note">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <p><strong>Free cancellation</strong> up to 48 hours before arrival. No prepayment required.</p>
+        </div>
+
+        <button type="button" class="checkout-cta" id="proceed-btn">
+          Continue to Payment
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+      </form>
+    </section>
+
+    <!-- ── Summary Panel ── -->
+    <aside class="summary-panel" aria-label="Booking summary">
+      <div class="summary-card">
+        <div class="summary-card__img-wrap">
+          <img src="images/hotel_room.png" alt="Double Room with Sea View" class="summary-card__img" />
+          <span class="summary-card__badge">Your Room</span>
+        </div>
+        <div class="summary-card__body">
+          <p class="summary-card__label">Porto Da Lua Boutique Hotel</p>
+          <h2 class="summary-card__title">Double Room with Sea View</h2>
+          <div class="summary-card__features">
+            <div class="summary-card__feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Up to 2 Guests</span>
+            </div>
+            <div class="summary-card__feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+              <span>1 King Bed</span>
+            </div>
+            <div class="summary-card__feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+              <span>Wi-Fi Included</span>
+            </div>
+            <div class="summary-card__feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <span>Breakfast Included</span>
+            </div>
+          </div>
+          <hr class="summary-card__divider" />
+          <div class="summary-price-row">
+            <span>Rate per night</span>
+            <span id="summary-nightly">$156</span>
+          </div>
+          <div class="summary-price-row">
+            <span id="summary-nights-lbl">× 3 nights</span>
+            <span id="summary-subtotal">$468</span>
+          </div>
+          <div class="summary-price-row">
+            <span>Taxes &amp; fees (10%)</span>
+            <span id="summary-taxes">$47</span>
+          </div>
+          <hr class="summary-card__divider" />
+          <div class="summary-price-total">
+            <span>Total</span>
+            <span class="total-amount" id="summary-total">$515</span>
+          </div>
+          <p class="summary-footnote">No credit card required to reserve.</p>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    (function () {
+      // Hamburger
+      const btn = document.getElementById("hamburger-btn");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(isOpen));
+        });
+      }
+
+      // Flatpickr dates
+      const arrivalEl   = document.getElementById("arrival-display");
+      const departureEl = document.getElementById("departure-display");
+      const RATE = 156;
+      let selectedNights = 3;
+
+      const fp = flatpickr("#date-picker-checkout", {
+        mode: "range", minDate: "today", dateFormat: "Y-m-d",
+        onChange(dates) {
+          if (dates.length >= 1) {
+            arrivalEl.textContent = flatpickr.formatDate(dates[0], "D, d M");
+            arrivalEl.classList.remove("dates-bar__value--placeholder");
+          }
+          if (dates.length === 2) {
+            departureEl.textContent = flatpickr.formatDate(dates[1], "D, d M");
+            departureEl.classList.remove("dates-bar__value--placeholder");
+            selectedNights = Math.round((dates[1] - dates[0]) / 86400000);
+            updatePricing(selectedNights);
+            // Persist for payment page
+            saveSession(dates);
+          }
+        }
+      });
+
+      document.getElementById("dates-bar-trigger").addEventListener("click", () => fp.open());
+      document.getElementById("dates-bar-trigger").addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fp.open(); }
+      });
+
+      function updatePricing(nights) {
+        if (!nights || nights < 1) nights = 3;
+        const sub   = RATE * nights;
+        const taxes = Math.round(sub * 0.1);
+        const total = sub + taxes;
+        document.getElementById("summary-nights-lbl").textContent = `× ${nights} night${nights !== 1 ? "s" : ""}`;
+        document.getElementById("summary-subtotal").textContent   = `$${sub}`;
+        document.getElementById("summary-taxes").textContent      = `$${taxes}`;
+        document.getElementById("summary-total").textContent      = `$${total}`;
+        sessionStorage.setItem("porto_total", total);
+      }
+
+      function saveSession(dates) {
+        const existing = JSON.parse(sessionStorage.getItem("porto_booking_data") || "{}");
+        existing.dates = dates.map(d => d.toISOString());
+        sessionStorage.setItem("porto_booking_data", JSON.stringify(existing));
+      }
+
+      // Restore from session
+      const stored = sessionStorage.getItem("porto_booking_data");
+      if (stored) {
+        try {
+          const data = JSON.parse(stored);
+          if (data.dates && data.dates.length >= 2) {
+            fp.setDate([new Date(data.dates[0]), new Date(data.dates[1])], true);
+          }
+          if (data.counts) {
+            const g = document.getElementById("guests-select");
+            const total = Math.min((data.counts.adults||2) + (data.counts.children||0), 4);
+            if (g) [...g.options].forEach(o => { if (o.value == total) o.selected = true; });
+            const r = document.getElementById("rooms-select");
+            if (r) [...r.options].forEach(o => { if (o.value == (data.counts.rooms||1)) o.selected = true; });
+          }
+          if (data.guest) {
+            const g = data.guest;
+            if (g.firstName) document.getElementById("first-name").value = g.firstName;
+            if (g.lastName)  document.getElementById("last-name").value  = g.lastName;
+            if (g.email)     document.getElementById("email").value     = g.email;
+            if (g.phone)     document.getElementById("phone").value     = g.phone;
+            if (g.nationality) document.getElementById("nationality").value = g.nationality;
+            if (g.guests)    document.getElementById("guests-select").value = g.guests;
+            if (g.rooms)     document.getElementById("rooms-select").value  = g.rooms;
+            if (g.arrivalTime) document.getElementById("arrival-time").value = g.arrivalTime;
+            if (g.specialReqs) document.getElementById("special-requests").value = g.specialReqs;
+          }
+        } catch(_) {}
+      }
+
+      // Auto-save on input change
+      document.querySelectorAll(".form-input, .form-select").forEach(el => {
+        el.addEventListener("change", () => {
+          const bookData = JSON.parse(sessionStorage.getItem("porto_booking_data") || "{}");
+          bookData.guest = {
+            firstName: document.getElementById("first-name").value.trim(),
+            lastName:  document.getElementById("last-name").value.trim(),
+            email:     document.getElementById("email").value.trim(),
+            phone:     document.getElementById("phone").value.trim(),
+            nationality:   document.getElementById("nationality").value,
+            guests:    document.getElementById("guests-select").value,
+            rooms:     document.getElementById("rooms-select").value,
+            arrivalTime:   document.getElementById("arrival-time").value,
+            specialReqs:   document.getElementById("special-requests").value.trim()
+          };
+          sessionStorage.setItem("porto_booking_data", JSON.stringify(bookData));
+        });
+      });
+
+      updatePricing(selectedNights);
+
+      // Proceed button — save details then navigate
+      document.getElementById("proceed-btn").addEventListener("click", () => {
+        const first = document.getElementById("first-name").value.trim();
+        const email = document.getElementById("email").value.trim();
+
+        if (!first) {
+          highlight("first-name"); return;
+        }
+        if (!email || !email.includes("@")) {
+          highlight("email"); return;
+        }
+
+        // Save guest info to session
+        const bookData = JSON.parse(sessionStorage.getItem("porto_booking_data") || "{}");
+        bookData.guest = {
+          firstName: first,
+          lastName:  document.getElementById("last-name").value.trim(),
+          email:     email,
+          phone:     document.getElementById("phone").value.trim(),
+          nationality:   document.getElementById("nationality").value,
+          guests:    document.getElementById("guests-select").value,
+          rooms:     document.getElementById("rooms-select").value,
+          arrivalTime:   document.getElementById("arrival-time").value,
+          specialReqs:   document.getElementById("special-requests").value.trim()
+        };
+        bookData.nights = selectedNights;
+        sessionStorage.setItem("porto_booking_data", JSON.stringify(bookData));
+
+        window.location.href = "payment.html";
+      });
+
+      function highlight(id) {
+        const el = document.getElementById(id);
+        el.style.borderColor = "#e05555";
+        el.focus();
+        setTimeout(() => el.style.borderColor = "", 2200);
+      }
+    })();
+  </script>
+</body>
+</html>

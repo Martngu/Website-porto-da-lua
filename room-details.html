@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room Details | Porto Da Lua Boutique Hotel</title>
+  <meta name="description"
+    content="Detailed information and booking options for the Double Room with Sea View at Porto Da Lua Boutique Hotel." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <style>
+    :root {
+      --bg-main: #fcf8f2;
+      --bg-card: #f5ece1;
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--color-text);
+      font-family: 'Manrope', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Match global navbar style */
+    .navbar {
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar__link {
+      font-family: 'Marcellus SC', serif;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    /* ── Hero ── */
+    .hero-booking {
+      position: relative;
+      height: 380px;
+      /* Slightly shorter */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: center;
+      color: white;
+      background: url('images/hotel_room.png') no-repeat center/cover;
+      padding-bottom: 40px;
+      /* Pushed lower as requested */
+    }
+
+    .hero-booking__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.38);
+      z-index: 1;
+    }
+
+    .hero-booking__content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-booking__title {
+      font-family: 'Marcellus', serif;
+      font-size: 28px;
+      /* Even smaller font as requested */
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin: 0 0 8px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-booking__subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin: 0;
+      opacity: 0.8;
+    }
+
+    /* ── Room Details Container ── */
+    .room-details-container {
+      max-width: 1140px;
+      margin: 60px auto 80px;
+      padding: 0 28px;
+    }
+
+    .room-title-section {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .room-title-section h1 {
+      font-family: 'Marcellus', serif;
+      font-size: 38px;
+      color: var(--color-text);
+      margin: 0;
+    }
+
+    .room-title-section .btn--back {
+      color: rgba(242, 139, 58, 0.75);
+      margin-bottom: 0 !important;
+    }
+
+    /* ── Date bar & Currency row ── */
+    .top-controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .dates-bar-wrap {
+      display: inline-flex;
+      align-items: center;
+      background: #fff;
+      border: 1.5px solid #e0d4c8;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .dates-bar-wrap:hover,
+    .dates-bar-wrap:focus-within {
+      border-color: var(--color-orange);
+      box-shadow: 0 0 0 3px rgba(242, 139, 58, 0.12);
+    }
+
+    .dates-bar-icon {
+      padding: 14px 16px;
+      color: #b0a090;
+      display: flex;
+      align-items: center;
+    }
+
+    .dates-bar-field {
+      padding: 12px 20px 12px 0;
+    }
+
+    .dates-bar-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .dates-bar-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .dates-bar-value.placeholder {
+      color: #c0b8b0;
+    }
+
+    /* ── Room Info Card ── */
+    .room-info-card {
+      background: #f1f0ec;
+      border-radius: 16px;
+      display: flex;
+      overflow: hidden;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .room-info-card__img {
+      flex: 0 0 300px;
+      height: 240px;
+      object-fit: cover;
+      margin: 16px;
+      border-radius: 12px;
+    }
+
+    .room-info-card__content {
+      padding: 30px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .room-info-card__bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .room-info-card__bullets li {
+      font-size: 16px;
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .room-info-card__bullets li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-orange);
+    }
+
+    .room-info-card__see-more {
+      color: #666;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 8px;
+      display: inline-block;
+    }
+
+    .room-info-card__actions {
+      padding: 30px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      border-left: 1px solid #e0dcd2;
+    }
+
+    .room-info-card__price {
+      font-size: 30px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 20px;
+    }
+
+    .room-info-card__price span {
+      font-size: 15px;
+      font-weight: 400;
+      color: #777;
+    }
+
+    /* ── Book This Room button — smaller ── */
+    .btn--booking {
+      background: var(--color-orange);
+      color: white;
+      text-decoration: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .btn--booking:hover {
+      background: #e07020;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(242, 139, 58, 0.35);
+    }
+
+    /* ── Spec bar ── */
+    .room-spec-bar {
+      display: flex;
+      gap: 24px;
+      background: #f8f6f2;
+      padding: 14px 22px;
+      border-radius: 10px;
+      width: fit-content;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .room-spec-bar__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .room-spec-bar__item svg {
+      width: 18px;
+      height: 18px;
+      color: #888;
+    }
+
+    /* ── Reveal animation (via IntersectionObserver) ── */
+    .animate-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .animate-up.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    /* ── Gallery ── */
+    .gallery-section-header {
+      font-family: 'Marcellus', serif;
+      font-size: 28px;
+      color: var(--color-text);
+      margin-bottom: 28px;
+    }
+
+    .gallery-slider-wrap {
+      position: relative;
+      margin-bottom: 80px;
+    }
+
+    .gallery-slider {
+      display: flex;
+      gap: 20px;
+      overflow: hidden;
+      scroll-behavior: smooth;
+      border-radius: 12px;
+    }
+
+    .gallery-slide {
+      flex: 0 0 calc(50% - 10px);
+      height: 300px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      cursor: zoom-in;
+    }
+
+    .gallery-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-slide:hover img {
+      transform: scale(1.04);
+    }
+
+    /* Nav arrows */
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--color-text);
+    }
+
+    .gallery-nav:hover {
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .gallery-nav--prev {
+      left: -20px;
+    }
+
+    .gallery-nav--next {
+      right: -20px;
+    }
+
+    /* Dot indicators */
+    .gallery-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .gallery-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d0c8be;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      padding: 0;
+    }
+
+    .gallery-dot.active {
+      background: var(--color-orange);
+      width: 22px;
+      border-radius: 4px;
+    }
+
+    /* Lightbox */
+    .gallery-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 12, 10, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-lightbox.open {
+      display: flex;
+    }
+
+    .gallery-lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+      object-fit: contain;
+      animation: lb-in 0.35s ease;
+    }
+
+    @keyframes lb-in {
+      from {
+        opacity: 0;
+        transform: scale(0.94);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .gallery-lightbox__close {
+      position: absolute;
+      top: 28px;
+      right: 36px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .gallery-lightbox__close:hover {
+      transform: rotate(90deg);
+    }
+
+    .gallery-lightbox__nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+    }
+
+    .gallery-lightbox__nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .gallery-lightbox__nav--prev {
+      left: 28px;
+    }
+
+    .gallery-lightbox__nav--next {
+      right: 28px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .room-info-card {
+        flex-direction: column;
+      }
+
+      .room-info-card__img {
+        flex: none;
+        width: 100%;
+        height: 280px;
+      }
+
+      .room-info-card__actions {
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .gallery-slide {
+        flex: 0 0 calc(100% - 0px);
+      }
+
+      .gallery-nav--prev {
+        left: 8px;
+      }
+
+      .gallery-nav--next {
+        right: 8px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-booking__title {
+        font-size: 38px;
+      }
+
+      .room-title-section h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Standard Global Navbar ── -->
+  <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <!-- Left Column: Links -->
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link" role="listitem">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link active" role="listitem"
+              style="color:#FF832A; border-bottom:2px solid #FF832A;">Accomodations</a>
+            <a href="restaurant.html" class="navbar__link" role="listitem">Restaurant</a>
+            <a href="activities.html" class="navbar__link" role="listitem">Activities</a>
+          </div>
+        </div>
+
+        <!-- Center: Logo -->
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+
+        <!-- Right: Actions -->
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="checkout.html" class="navbar__link btn--book">Book Now</a>
+
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false"
+            aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="restaurant.html" class="navbar__link">Restaurant</a>
+        <a href="activities.html" class="navbar__link">Activities</a>
+        <a href="index.html#about" class="navbar__link">About us</a>
+        <a href="tel:+5571367611 55" class="navbar__link">Tel +55 71 3676 11 55</a>
+        <a href="checkout.html" class="navbar__cta btn--book" style="margin-top:8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ── Hero ── -->
+    <section class="hero-booking">
+      <div class="hero-booking__overlay"></div>
+      <div class="hero-booking__content">
+        <h1 class="hero-booking__title">Room Details</h1>
+        <p class="hero-booking__subtitle">Double Room with Sea View</p>
+      </div>
+    </section>
+
+    <div class="room-details-container">
+
+      <!-- Title -->
+      <div class="room-title-section">
+        <a href="accommodations.html" class="btn--back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back
+        </a>
+        <h1>Double Room with Sea View</h1>
+      </div>
+
+      <!-- ── Date Bar & Currency ── -->
+      <div class="top-controls-row">
+        <div class="dates-bar-wrap" id="dates-trigger" role="button" tabindex="0" aria-label="Select dates">
+          <div class="dates-bar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+          </div>
+          <div class="dates-bar-field">
+            <span class="dates-bar-label">Arrival / Departure</span>
+            <span class="dates-bar-value placeholder" id="date-display">Select your dates</span>
+          </div>
+        </div>
+
+        <div class="curr-select-wrap">
+          <select id="currency-select-details" class="curr-select" aria-label="Select Currency"
+            style="padding: 10px 16px; border-radius: 8px; border: 1.5px solid #e0d4c8; font-weight: 600; outline: none; background: white; color: var(--color-text); cursor: pointer;">
+            <option value="USD" data-symbol="$" data-rate="1">USD — US Dollar</option>
+            <option value="EUR" data-symbol="€" data-rate="0.92">EUR — Euro</option>
+            <option value="BRL" data-symbol="R$" data-rate="5.15" selected>BRL — Brazilian Real</option>
+            <option value="GBP" data-symbol="£" data-rate="0.79">GBP — British Pound</option>
+            <option value="JPY" data-symbol="¥" data-rate="154.3">JPY — Japanese Yen</option>
+            <option value="CHF" data-symbol="CHF" data-rate="0.91">CHF — Swiss Franc</option>
+            <option value="CAD" data-symbol="C$" data-rate="1.37">CAD — Canadian Dollar</option>
+            <option value="AUD" data-symbol="A$" data-rate="1.52">AUD — Australian Dollar</option>
+            <option value="CNY" data-symbol="¥" data-rate="7.24">CNY — Chinese Yuan</option>
+            <option value="DKK" data-symbol="kr" data-rate="6.85">DKK — Danish Krone</option>
+          </select>
+        </div>
+
+        <input type="text" id="datePicker" style="opacity:0;width:0;height:0;position:absolute;" />
+      </div>
+
+      <!-- ── Room Info Card ── -->
+      <div class="room-info-card">
+        <img src="images/hotel_room.png" alt="Double Room Sea View Interior" class="room-info-card__img" />
+
+        <div class="room-info-card__content">
+          <ul class="room-info-card__bullets">
+            <li>1 large double comfy beds</li>
+            <li>Up to 2 guests</li>
+            <li>21m² on average</li>
+            <li>TV included</li>
+            <li>Private bathroom</li>
+          </ul>
+          <a href="#" class="room-info-card__see-more">See full description ›</a>
+        </div>
+
+        <div class="room-info-card__actions">
+          <div class="room-info-card__price">
+            $156 <span>/night</span>
+          </div>
+          <a href="checkout.html" class="btn--booking">Book This Room</a>
+        </div>
+      </div>
+
+      <!-- ── Spec bar ── -->
+      <div class="room-spec-bar">
+        <div class="room-spec-bar__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          2 Persons
+        </div>
+        <div class="room-spec-bar__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+            <line x1="6" y1="1" x2="6" y2="4" />
+            <line x1="10" y1="1" x2="10" y2="4" />
+            <line x1="14" y1="1" x2="14" y2="4" />
+          </svg>
+          Breakfast included
+        </div>
+        <div class="room-spec-bar__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12h8" />
+            <path d="M12 8v8" />
+          </svg>
+          Accessible
+        </div>
+        <div class="room-spec-bar__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+            <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+            <line x1="12" y1="20" x2="12.01" y2="20" />
+          </svg>
+          Wi-Fi
+        </div>
+        <div class="room-spec-bar__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="15" rx="2" />
+            <polyline points="17 2 12 7 7 2" />
+          </svg>
+          Sea View
+        </div>
+      </div>
+
+      <!-- ── Image Gallery with Slider ── -->
+      <h2 class="gallery-section-header">Room Images</h2>
+
+      <div class="gallery-slider-wrap">
+        <!-- Prev / Next arrows -->
+        <button class="gallery-nav gallery-nav--prev" id="gal-prev" aria-label="Previous images">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button class="gallery-nav gallery-nav--next" id="gal-next" aria-label="Next images">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+
+        <!-- Slider track -->
+        <div class="gallery-slider" id="gal-track">
+          <div class="gallery-slide" data-index="0">
+            <img src="images/roomlook1.jpeg" alt="Room View — Interior" loading="lazy" />
+          </div>
+          <div class="gallery-slide" data-index="1">
+            <img src="images/roomlook2.jpeg" alt="Hotel Exterior" loading="lazy" />
+          </div>
+          <div class="gallery-slide" data-index="2">
+            <img src="images/room3.png" alt="Garden and Pool" loading="lazy" />
+          </div>
+          <div class="gallery-slide" data-index="3">
+            <img src="images/roomlook4.jpeg" alt="Ocean Terrace View" loading="lazy" />
+          </div>
+          <div class="gallery-slide" data-index="4">
+            <img src="images/roomlook5.jpeg" alt="Beachfront Snorkeling" loading="lazy" />
+          </div>
+          <div class="gallery-slide" data-index="5">
+            <img src="images/roomlook6.png" alt="Tropical Beach" loading="lazy" />
+          </div>
+        </div>
+
+        <!-- Dot indicators -->
+        <div class="gallery-dots" id="gal-dots" aria-label="Gallery navigation"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── Newsletter ── -->
+  <section class="newsletter-banner" aria-label="Newsletter subscription">
+    <div class="newsletter-banner__content">
+      <h2 class="newsletter-banner__title">Stay in touch with us</h2>
+      <div class="newsletter-banner__form">
+        <input type="email" class="newsletter-banner__input" placeholder="Enter email" aria-label="Email address" />
+        <input type="text" class="newsletter-banner__input" placeholder="Name" aria-label="Your name" />
+        <button type="button" class="newsletter-banner__btn">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer-dark">
+    <div class="footer__inner">
+      <div class="footer__col footer__col--logo">
+        <img src="assets/logo.png" alt="Porto Da Lua logo" class="footer__logo-img" />
+      </div>
+      <div class="footer__col footer__col--contact">
+        <p class="footer__col-title">Contact info</p>
+        <p class="footer__contact-line">Tel: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">Whatsapp: +55 71 3676 11 55</p>
+        <p class="footer__contact-line">E-mail: <a
+            href="mailto:reservas@portodalua.com.br">reservas@portodalua.com.br</a></p>
+      </div>
+      <div class="footer__col footer__col--address">
+        <p class="footer__col-title">Address</p>
+        <p class="footer__address-name">Boutique Hotel Porto da Lua</p>
+        <p class="footer__address-line">Praia do Forte - Mata de São João - Ba</p>
+        <p class="footer__address-line">CEP 48280-000</p>
+      </div>
+      <div class="footer__col footer__col--social">
+        <div class="footer__social">
+          <a href="#" class="footer__social-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg></a>
+          <a href="#" class="footer__social-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg></a>
+          <a href="#" class="footer__social-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3.5Z" />
+            </svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Lightbox ── -->
+  <div class="gallery-lightbox" id="gal-lightbox" role="dialog" aria-modal="true">
+    <button class="gallery-lightbox__close" id="gal-lb-close" aria-label="Close">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <button class="gallery-lightbox__nav gallery-lightbox__nav--prev" id="gal-lb-prev" aria-label="Previous">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </button>
+    <img id="gal-lb-img" src="" alt="" />
+    <button class="gallery-lightbox__nav gallery-lightbox__nav--next" id="gal-lb-next" aria-label="Next">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    (function () {
+      // ── Hamburger ──
+      const hambBtn = document.getElementById("hamburger-btn");
+      const mobMenu = document.getElementById("mobile-menu");
+      if (hambBtn && mobMenu) {
+        hambBtn.addEventListener("click", () => {
+          const isOpen = mobMenu.classList.toggle("is-open");
+          hambBtn.setAttribute("aria-expanded", String(isOpen));
+        });
+      }
+
+      // ── Flatpickr Dates ──
+      const dateDisplay = document.getElementById("date-display");
+      const fp = flatpickr("#datePicker", {
+        mode: "range", minDate: "today", dateFormat: "d/m",
+        onChange(dates) {
+          if (dates.length === 2) {
+            dateDisplay.textContent = flatpickr.formatDate(dates[0], "d M") + " — " + flatpickr.formatDate(dates[1], "d M");
+            dateDisplay.classList.remove("placeholder");
+            // Save to session for checkout
+            const stored = JSON.parse(sessionStorage.getItem("porto_booking_data") || "{}");
+            stored.dates = dates.map(d => d.toISOString());
+            sessionStorage.setItem("porto_booking_data", JSON.stringify(stored));
+          }
+        }
+      });
+
+      // --- Restore from session ---
+      const stored = sessionStorage.getItem("porto_booking_data");
+      if (stored) {
+        try {
+          const data = JSON.parse(stored);
+          if (data.dates && data.dates.length >= 2) {
+            const d1 = new Date(data.dates[0]);
+            const d2 = new Date(data.dates[1]);
+            fp.setDate([d1, d2], true);
+            dateDisplay.textContent = flatpickr.formatDate(d1, "d M") + " — " + flatpickr.formatDate(d2, "d M");
+            dateDisplay.classList.remove("placeholder");
+          }
+        } catch (_) { }
+      }
+
+      document.getElementById("dates-trigger").addEventListener("click", () => fp.open());
+      document.getElementById("dates-trigger").addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fp.open(); }
+      });
+
+      // --- Prevent syntax error by not declaring stored twice ---
+
+      // ── Currency Logic ──
+      const currencySelect = document.getElementById("currency-select-details");
+      const priceDisplay = document.querySelector(".room-info-card__price");
+      const baseBRL = 1300; // Consistent with accommodations base price
+
+      function updateCurrency() {
+        const opt = currencySelect.options[currencySelect.selectedIndex];
+        const rate = parseFloat(opt.dataset.rate);
+        const sym = opt.dataset.symbol;
+
+        // Convert BRL -> selected currency (rate corresponds to BRL->USD being 5.15 etc)
+        const finalPrice = Math.round((baseBRL / 5.15) * rate);
+        priceDisplay.innerHTML = `${sym}${finalPrice} <span>/night</span>`;
+        sessionStorage.setItem("porto_currency", opt.value);
+      }
+
+      currencySelect.addEventListener("change", updateCurrency);
+
+      const savedCurrency = sessionStorage.getItem("porto_currency");
+      if (savedCurrency) {
+        let found = false;
+        Array.from(currencySelect.options).forEach(opt => {
+          if (opt.value === savedCurrency) {
+            opt.selected = true;
+            found = true;
+          }
+        });
+        if (found) updateCurrency();
+      } else {
+        updateCurrency();
+      }
+
+      // ── Gallery Slider ──
+      const track = document.getElementById("gal-track");
+      const slides = Array.from(track.querySelectorAll(".gallery-slide"));
+      const dotsEl = document.getElementById("gal-dots");
+      const VISIBLE = window.innerWidth <= 1024 ? 1 : 2;
+      let currentPage = 0;
+      const totalPages = Math.ceil(slides.length / VISIBLE);
+
+      // Build dots
+      for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement("button");
+        dot.className = "gallery-dot" + (i === 0 ? " active" : "");
+        dot.setAttribute("aria-label", `Go to slide group ${i + 1}`);
+        dot.addEventListener("click", () => goTo(i));
+        dotsEl.appendChild(dot);
+      }
+
+      function goTo(page) {
+        if (page < 0) page = totalPages - 1;
+        if (page >= totalPages) page = 0;
+        currentPage = page;
+        const slideWidth = slides[0].offsetWidth + 20; // width + gap
+        track.scrollTo({ left: page * VISIBLE * slideWidth, behavior: "smooth" });
+        dotsEl.querySelectorAll(".gallery-dot").forEach((d, i) => d.classList.toggle("active", i === page));
+      }
+
+      document.getElementById("gal-prev").addEventListener("click", () => goTo(currentPage - 1));
+      document.getElementById("gal-next").addEventListener("click", () => goTo(currentPage + 1));
+
+      // Touch/drag support
+      let startX = 0, isDragging = false;
+      track.addEventListener("touchstart", e => { startX = e.touches[0].pageX; isDragging = true; }, { passive: true });
+      track.addEventListener("touchend", e => {
+        if (!isDragging) return;
+        const dx = e.changedTouches[0].pageX - startX;
+        if (Math.abs(dx) > 50) goTo(dx < 0 ? currentPage + 1 : currentPage - 1);
+        isDragging = false;
+      });
+
+      // ── Lightbox ──
+      const lightbox = document.getElementById("gal-lightbox");
+      const lbImg = document.getElementById("gal-lb-img");
+      const lbClose = document.getElementById("gal-lb-close");
+      const lbPrev = document.getElementById("gal-lb-prev");
+      const lbNext = document.getElementById("gal-lb-next");
+      let lbCurrent = 0;
+      const allImgs = slides.map(s => ({ src: s.querySelector("img").src, alt: s.querySelector("img").alt }));
+
+      slides.forEach((slide, i) => {
+        slide.addEventListener("click", () => openLightbox(i));
+      });
+
+      function openLightbox(index) {
+        lbCurrent = index;
+        lbImg.src = allImgs[lbCurrent].src;
+        lbImg.alt = allImgs[lbCurrent].alt;
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      lbClose.addEventListener("click", () => { lightbox.classList.remove("open"); document.body.style.overflow = ""; });
+      lbPrev.addEventListener("click", () => openLightbox((lbCurrent - 1 + allImgs.length) % allImgs.length));
+      lbNext.addEventListener("click", () => openLightbox((lbCurrent + 1) % allImgs.length));
+
+      lightbox.addEventListener("click", e => { if (e.target === lightbox) { lightbox.classList.remove("open"); document.body.style.overflow = ""; } });
+      document.addEventListener("keydown", e => {
+        if (!lightbox.classList.contains("open")) return;
+        if (e.key === "Escape") { lightbox.classList.remove("open"); document.body.style.overflow = ""; }
+        if (e.key === "ArrowLeft") lbPrev.click();
+        if (e.key === "ArrowRight") lbNext.click();
+      });
+
+      // ── IntersectionObserver for scroll animations ──
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+    })();
+  </script>
+</body>
+
+</html>

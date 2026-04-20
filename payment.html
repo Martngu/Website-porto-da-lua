@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment – Porto Da Lua Boutique Hotel</title>
+  <meta name="description" content="Secure payment for your reservation at Porto Da Lua Boutique Hotel." />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-main: #fcf8f2;
+      --color-text: #1a1a1a;
+      --color-orange: #f28b3a;
+      --form-bg: #ffffff;
+      --form-border: #e8ddd4;
+      --input-bg: #fefbf7;
+      --summary-bg: #1e2a22;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-main);
+      font-family: 'Manrope', sans-serif;
+      color: var(--color-text);
+      margin: 0; padding: 0;
+    }
+
+    .navbar { transition: background-color 0.3s ease; }
+    .navbar__link { font-family: 'Marcellus SC', serif; font-size: 18px; text-transform: uppercase; }
+
+    /* ── Progress Bar ── */
+    .progress-bar {
+      background: var(--form-bg);
+      border-bottom: 1px solid var(--form-border);
+      padding: 18px 48px;
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      margin-top: 180px;
+    }
+    .progress-step { display: flex; align-items: center; gap: 10px; }
+    .progress-step__dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .progress-step__dot--active   { background: var(--color-orange); color: white; }
+    .progress-step__dot--done     { background: #4caf87; color: white; }
+    .progress-step__dot--inactive { background: #e0d8d0; color: #888; }
+    .progress-step__label         { font-size: 13px; font-weight: 600; color: #888; white-space: nowrap; }
+    .progress-step__label--active { color: var(--color-orange); }
+    .progress-step__label--done   { color: #4caf87; }
+    .progress-line       { width: 64px; height: 2px; background: #e0d8d0; margin: 0 10px; flex-shrink: 0; }
+    .progress-line--done { background: #4caf87; }
+
+    /* ── Layout ── */
+    .payment-layout {
+      max-width: 1220px;
+      margin: 48px auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ── Payment Panel ── */
+    .payment-panel {
+      background: var(--form-bg);
+      border-radius: 20px;
+      padding: 48px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    }
+
+    .form-section-title    { font-family: 'Marcellus', serif; font-size: 28px; margin: 0 0 6px; }
+    .form-section-subtitle { font-size: 15px; color: #888; margin: 0 0 36px; }
+    .form-divider          { border: none; border-top: 1px solid var(--form-border); margin: 32px 0; }
+    .form-group            { margin-bottom: 22px; }
+    .form-group label      { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: #888; margin-bottom: 9px; }
+    .form-row              { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid var(--form-border);
+      border-radius: 10px;
+      background: var(--input-bg);
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px; color: var(--color-text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--color-orange);
+      box-shadow: 0 0 0 3px rgba(242,139,58,0.12);
+    }
+    .form-input::placeholder { color: #c0b8b0; }
+
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; padding-right: 44px;
+    }
+
+    /* ── Card input with icons overlay ── */
+    .card-field-wrap { position: relative; }
+    .card-field-wrap .form-input { padding-right: 110px; }
+    .card-icons {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      display: flex; gap: 5px; pointer-events: none;
+    }
+    .card-icon {
+      width: 40px; height: 26px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; letter-spacing: -0.3px;
+      opacity: 0.55;
+    }
+    .card-icon--visa { background: #1a1f71; color: white; font-style: italic; }
+    .card-icon--mc   { background: #eb001b; color: white; position: relative; overflow: hidden; }
+    .card-icon--mc::after {
+      content: "";
+      position: absolute; left: 18px; top: 0; width: 22px; height: 100%;
+      background: #f79e1b; mix-blend-mode: multiply; border-radius: 0 4px 4px 0;
+    }
+    .card-icon--amex { background: #0077a6; color: white; font-size: 8px; }
+
+    /* ── Method tabs ── */
+    .payment-methods {
+      display: flex; gap: 12px; margin-bottom: 28px;
+    }
+    .payment-method {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 16px 12px;
+      border: 2px solid var(--form-border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: var(--input-bg);
+      font-size: 13px; font-weight: 600; color: #888;
+      user-select: none;
+    }
+    .payment-method.active {
+      border-color: var(--color-orange);
+      background: #fff8f2;
+      color: var(--color-orange);
+      box-shadow: 0 0 0 3px rgba(242,139,58,0.1);
+    }
+    .payment-method svg { opacity: 0.5; }
+    .payment-method.active svg { opacity: 1; color: var(--color-orange); }
+
+    /* ── Secure badge strip ── */
+    .secure-strip {
+      display: flex; align-items: center; gap: 10px;
+      background: #f5fbf7; border: 1px solid #c8e6d0;
+      border-radius: 10px; padding: 14px 18px; margin-bottom: 28px;
+      font-size: 13px; color: #3a7050;
+    }
+    .secure-strip svg { flex-shrink: 0; color: #4caf87; }
+
+    /* ── CTA ── */
+    .pay-cta {
+      width: 100%; padding: 20px 32px;
+      background: linear-gradient(135deg, #1e2a22, #2d4030);
+      color: white; border: none; border-radius: 12px;
+      font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 8px 28px rgba(30,42,34,0.3);
+    }
+    .pay-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(30,42,34,0.4); }
+    .pay-cta svg   { transition: transform 0.3s; }
+    .pay-cta:hover svg { transform: translateX(3px); }
+
+    .pay-footnote { text-align: center; font-size: 12px; color: #bbb; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    /* ── Loading overlay on button ── */
+    .pay-cta.loading { pointer-events: none; opacity: 0.8; }
+
+    /* ── Summary Panel ── */
+    .summary-panel { position: sticky; top: 32px; }
+    .summary-card  { background: var(--summary-bg); border-radius: 20px; overflow: hidden; box-shadow: 0 16px 60px rgba(0,0,0,0.18); color: white; }
+    .summary-card__img-wrap { position: relative; height: 200px; overflow: hidden; }
+    .summary-card__img      { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .summary-card__badge    { position: absolute; top: 16px; left: 16px; background: var(--color-orange); color: white; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 99px; text-transform: uppercase; }
+    .summary-card__body     { padding: 28px; }
+    .summary-card__label    { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 8px; }
+    .summary-card__title    { font-family: 'Marcellus', serif; font-size: 20px; color: white; margin: 0 0 16px; line-height: 1.3; }
+    .summary-card__divider  { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 16px 0; }
+    .summary-price-row      { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: rgba(255,255,255,0.6); }
+    .summary-price-row span:last-child { color: white; font-weight: 600; }
+    .summary-price-total    { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+    .summary-price-total span:first-child { font-size: 15px; font-weight: 700; color: white; }
+    .total-amount           { font-family: 'Marcellus', serif; font-size: 28px; color: var(--color-orange); }
+    .summary-footnote       { font-size: 12px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 14px; }
+
+    /* Guest recap box */
+    .guest-recap {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 18px 20px; margin-top: 20px;
+    }
+    .guest-recap__label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+    .guest-recap__row   { display: flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+    .guest-recap__row:last-child { margin-bottom: 0; }
+    .guest-recap__row svg { flex-shrink: 0; color: var(--color-orange); }
+    .guest-recap__edit  { font-size: 12px; color: rgba(242,139,58,0.8); text-decoration: none; margin-top: 14px; display: inline-block; transition: color 0.2s; }
+    .guest-recap__edit:hover { color: var(--color-orange); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .payment-layout { grid-template-columns: 1fr; }
+      .summary-panel  { position: static; order: -1; }
+      .progress-bar   { padding: 14px 20px; margin-top: 160px; }
+    }
+    @media (max-width: 768px) {
+      .progress-line { width: 30px; }
+      .progress-step__label { display: none; }
+      .payment-panel { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; gap: 14px; }
+      .payment-methods { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <header>
+    <nav class="navbar navbar--with-bg" role="navigation" aria-label="Main navigation">
+      <div class="navbar__inner">
+        <div class="navbar__column navbar__column--left">
+          <div class="navbar__row" role="list">
+            <a href="index.html" class="navbar__link" role="listitem">Home</a>
+            <a href="about.html" class="navbar__link" role="listitem">About us</a>
+            <a href="gallery.html" class="navbar__link" role="listitem">Gallery</a>
+          </div>
+          <div class="navbar__row" role="list">
+            <a href="accommodations.html" class="navbar__link" role="listitem">Accomodations</a>
+            <a href="restaurant.html" class="navbar__link" role="listitem">Restaurant</a>
+            <a href="activities.html" class="navbar__link" role="listitem">Activities</a>
+          </div>
+        </div>
+        <a href="index.html" class="navbar__logo" aria-label="Porto Da Lua home">
+          <img src="assets/logo.png" alt="Porto Da Lua logo" />
+        </a>
+        <div class="navbar__column navbar__column--right">
+          <span class="navbar__link navbar__link--tel">Tel: +55 71 3676 11 55</span>
+          <a href="accommodations.html" class="navbar__link btn--book">Book Now</a>
+          <button class="navbar__hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu" id="hamburger-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav id="mobile-menu" class="navbar__mobile-menu" aria-label="Mobile navigation">
+        <a href="index.html" class="navbar__link">Home</a>
+        <a href="accommodations.html" class="navbar__link">Accommodations</a>
+        <a href="restaurant.html" class="navbar__link">Restaurant</a>
+        <a href="activities.html" class="navbar__link">Activities</a>
+        <a href="index.html#about" class="navbar__link">About us</a>
+        <a href="accommodations.html" class="navbar__cta btn--book" style="margin-top:8px">Book Now</a>
+      </nav>
+    </nav>
+  </header>
+
+  <!-- ── Progress Bar ── -->
+  <nav class="progress-bar" aria-label="Booking progress">
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Choose Room</span>
+    </div>
+    <div class="progress-line progress-line--done"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--done">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="progress-step__label progress-step__label--done">Your Details</span>
+    </div>
+    <div class="progress-line progress-line--done"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--active">3</div>
+      <span class="progress-step__label progress-step__label--active">Payment</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+      <div class="progress-step__dot progress-step__dot--inactive">4</div>
+      <span class="progress-step__label">Confirmation</span>
+    </div>
+  </nav>
+
+  <main class="payment-layout">
+
+    <!-- ── Payment Form ── -->
+    <section class="payment-panel" aria-labelledby="pay-title">
+      
+      <a href="checkout.html" class="btn--back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Your Details
+      </a>
+
+      <h1 class="form-section-title" id="pay-title">Secure Payment</h1>
+      <p class="form-section-subtitle">Your data is encrypted and never stored on our servers.</p>
+
+      <!-- Method selector -->
+      <div class="payment-methods" role="group" aria-label="Payment method">
+        <div class="payment-method active" id="method-card" role="button" tabindex="0" aria-pressed="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Credit / Debit Card
+        </div>
+        <div class="payment-method" id="method-paypal" role="button" tabindex="0" aria-pressed="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9h10l-1.5 6H6L4 3h16"/></svg>
+          PayPal
+        </div>
+        <div class="payment-method" id="method-bank" role="button" tabindex="0" aria-pressed="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+          Bank Transfer
+        </div>
+      </div>
+
+      <!-- Secure note -->
+      <div class="secure-strip">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Your connection is secure. Transactions are protected by 256-bit SSL.
+      </div>
+
+      <!-- Card fields (shown for credit card method) -->
+      <div id="card-fields">
+        <div class="form-group">
+          <label for="cardholder-name">Name on Card</label>
+          <input type="text" id="cardholder-name" class="form-input" placeholder="As it appears on the card" autocomplete="cc-name" />
+        </div>
+
+        <div class="form-group">
+          <label for="card-number">Card Number</label>
+          <div class="card-field-wrap">
+            <input type="text" id="card-number" class="form-input" placeholder="1234 5678 9012 3456"
+              maxlength="19" autocomplete="cc-number" inputmode="numeric" />
+            <div class="card-icons" aria-hidden="true">
+              <div class="card-icon card-icon--visa">VISA</div>
+              <div class="card-icon card-icon--mc">MC</div>
+              <div class="card-icon card-icon--amex">AMEX</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="card-expiry">Expiry Date</label>
+            <input type="text" id="card-expiry" class="form-input" placeholder="MM / YY"
+              maxlength="7" autocomplete="cc-exp" inputmode="numeric" />
+          </div>
+          <div class="form-group">
+            <label for="card-cvv">CVV / CVC</label>
+            <input type="text" id="card-cvv" class="form-input" placeholder="•••"
+              maxlength="4" autocomplete="cc-csc" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="billing-country">Billing Country</label>
+          <select id="billing-country" class="form-select">
+            <option value="">Select country…</option>
+            <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Brazil</option><option>Bulgaria</option><option>Cambodia</option><option>Canada</option><option>Chile</option><option>China</option><option>Colombia</option><option>Costa Rica</option><option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czech Republic</option>
+            <option selected>Denmark</option>
+            <option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>Estonia</option><option>Ethiopia</option><option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Hungary</option><option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kuwait</option><option>Latvia</option><option>Lebanon</option><option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option><option>Malta</option><option>Mexico</option><option>Moldova</option><option>Morocco</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nigeria</option><option>North Macedonia</option>
+            <option>Norway</option>
+            <option>Oman</option><option>Pakistan</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Saudi Arabia</option><option>Serbia</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>South Africa</option><option>South Korea</option><option>Spain</option><option>Sri Lanka</option>
+            <option>Sweden</option>
+            <option>Switzerland</option><option>Taiwan</option><option>Thailand</option><option>Tunisia</option><option>Turkey</option><option>Ukraine</option><option>United Arab Emirates</option>
+            <option>United Kingdom</option>
+            <option>United States</option>
+            <option>Uruguay</option><option>Venezuela</option><option>Vietnam</option><option>Zimbabwe</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PayPal notice -->
+      <div id="paypal-notice" style="display:none; padding: 32px; text-align:center; background:#fef9ef; border:1px solid #ede0ca; border-radius:12px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0070ba" stroke-width="1.5" style="margin:0 auto 16px;display:block;"><path d="M6 9h10l-1.5 6H6L4 3h16"/></svg>
+        <p style="margin:0 0 8px;font-size:16px;font-weight:600;color:#333;">You'll be redirected to PayPal</p>
+        <p style="margin:0;font-size:14px;color:#888;">Clicking "Complete Booking" will open PayPal's secure payment portal.</p>
+      </div>
+
+      <!-- Bank transfer notice -->
+      <div id="bank-notice" style="display:none; padding:24px; background:#f5f5f5; border-radius:12px;">
+        <p style="margin:0 0 8px;font-size:15px;font-weight:600;">Bank Transfer Details</p>
+        <p style="margin:0;font-size:14px;color:#666;line-height:1.8;">
+          Bank: <strong>Banco do Brasil</strong><br/>
+          Account: <strong>0012 4567-8</strong><br/>
+          IBAN: <strong>BR18 0000 0000 0000 1234 567C 2</strong><br/>
+          Reference: <strong id="bank-ref">PDL-BOOKING</strong>
+        </p>
+      </div>
+
+      <hr class="form-divider" />
+
+      <button type="button" class="pay-cta" id="pay-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Complete Booking · <span id="pay-amount">$515</span>
+      </button>
+
+      <p class="pay-footnote">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secured by SSL · 256-bit encryption · No data stored
+      </p>
+    </section>
+
+    <!-- ── Summary Panel ── -->
+    <aside class="summary-panel" aria-label="Booking summary">
+      <div class="summary-card">
+        <div class="summary-card__img-wrap">
+          <img src="images/hotel_room.png" alt="Double Room with Sea View" class="summary-card__img" />
+          <span class="summary-card__badge">Your Room</span>
+        </div>
+        <div class="summary-card__body">
+          <p class="summary-card__label">Porto Da Lua Boutique Hotel</p>
+          <h2 class="summary-card__title">Double Room with Sea View</h2>
+          <hr class="summary-card__divider" />
+          <div class="summary-price-row">
+            <span>Rate per night</span>
+            <span>$156</span>
+          </div>
+          <div class="summary-price-row">
+            <span id="summary-nights-lbl">× 3 nights</span>
+            <span id="summary-subtotal">$468</span>
+          </div>
+          <div class="summary-price-row">
+            <span>Taxes &amp; fees (10%)</span>
+            <span id="summary-taxes">$47</span>
+          </div>
+          <hr class="summary-card__divider" />
+          <div class="summary-price-total">
+            <span>Total due today</span>
+            <span class="total-amount" id="summary-total">$515</span>
+          </div>
+          <p class="summary-footnote">All prices in USD.</p>
+
+          <!-- Guest recap -->
+          <div class="guest-recap" id="guest-recap-box">
+            <p class="guest-recap__label">Guest</p>
+            <div class="guest-recap__row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span id="recap-name">—</span>
+            </div>
+            <div class="guest-recap__row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span id="recap-email">—</span>
+            </div>
+            <div class="guest-recap__row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="recap-dates">Select dates</span>
+            </div>
+            <a href="checkout.html" class="guest-recap__edit">← Edit details</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    (function () {
+      // Hamburger
+      const btn = document.getElementById("hamburger-btn");
+      const menu = document.getElementById("mobile-menu");
+      if (btn && menu) {
+        btn.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(isOpen));
+        });
+      }
+
+      // ── Restore session data ──
+      const stored = JSON.parse(sessionStorage.getItem("porto_booking_data") || "{}");
+      const nights = stored.nights || 3;
+      const rate   = 156;
+      const sub    = rate * nights;
+      const taxes  = Math.round(sub * 0.1);
+      const total  = sub + taxes;
+
+      document.getElementById("summary-nights-lbl").textContent = `× ${nights} night${nights !== 1 ? "s" : ""}`;
+      document.getElementById("summary-subtotal").textContent   = `$${sub}`;
+      document.getElementById("summary-taxes").textContent      = `$${taxes}`;
+      document.getElementById("summary-total").textContent      = `$${total}`;
+      document.getElementById("pay-amount").textContent         = `$${total}`;
+
+      // Guest recap
+      if (stored.guest) {
+        const g = stored.guest;
+        document.getElementById("recap-name").textContent  = `${g.firstName || ""} ${g.lastName || ""}`.trim() || "—";
+        document.getElementById("recap-email").textContent = g.email || "—";
+        // Pre-fill cardholder name
+        document.getElementById("cardholder-name").value = `${g.firstName || ""} ${g.lastName || ""}`.trim();
+      }
+      if (stored.dates && stored.dates.length >= 2) {
+        const fmt = iso => {
+          const d = new Date(iso);
+          return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+        };
+        document.getElementById("recap-dates").textContent = `${fmt(stored.dates[0])} – ${fmt(stored.dates[1])}`;
+      }
+
+      // ── Payment method tabs ──
+      const methods = ["card", "paypal", "bank"];
+      methods.forEach(m => {
+        const el = document.getElementById(`method-${m}`);
+        el.addEventListener("click", () => {
+          methods.forEach(x => {
+            document.getElementById(`method-${x}`).classList.remove("active");
+            document.getElementById(`method-${x}`).setAttribute("aria-pressed", "false");
+          });
+          el.classList.add("active");
+          el.setAttribute("aria-pressed", "true");
+
+          document.getElementById("card-fields").style.display   = m === "card"   ? "block" : "none";
+          document.getElementById("paypal-notice").style.display = m === "paypal" ? "block" : "none";
+          document.getElementById("bank-notice").style.display   = m === "bank"   ? "block" : "none";
+        });
+        el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") el.click(); });
+      });
+
+      // ── Card number formatting ──
+      document.getElementById("card-number").addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim().slice(0, 19);
+      });
+      document.getElementById("card-expiry").addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").replace(/(\d{2})(\d)/, "$1 / $2").slice(0, 7);
+      });
+      document.getElementById("card-cvv").addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 4);
+      });
+
+      // ── Pay button ──
+      document.getElementById("pay-btn").addEventListener("click", () => {
+        const activeMethod = document.querySelector(".payment-method.active");
+        const methodId = activeMethod ? activeMethod.id : "method-card";
+
+        if (methodId === "method-card") {
+          const num = document.getElementById("card-number").value.replace(/\s/g, "");
+          const exp = document.getElementById("card-expiry").value;
+          const cvv = document.getElementById("card-cvv").value;
+          if (num.length < 15) { highlight("card-number"); return; }
+          if (!exp || exp.length < 5) { highlight("card-expiry"); return; }
+          if (cvv.length < 3) { highlight("card-cvv"); return; }
+        }
+
+        // Save total & process
+        stored.total = total;
+        stored.method = methodId.replace("method-", "");
+        sessionStorage.setItem("porto_booking_data", JSON.stringify(stored));
+
+        const payBtn = document.getElementById("pay-btn");
+        payBtn.classList.add("loading");
+        payBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Processing payment…`;
+
+        setTimeout(() => {
+          // Generate reference and store
+          const ref = "PDL-" + Math.random().toString(36).substring(2,8).toUpperCase();
+          stored.bookingRef = ref;
+          sessionStorage.setItem("porto_booking_data", JSON.stringify(stored));
+          window.location.href = "confirmation.html";
+        }, 2400);
+      });
+
+      function highlight(id) {
+        const el = document.getElementById(id);
+        el.style.borderColor = "#e05555";
+        el.focus();
+        setTimeout(() => el.style.borderColor = "", 2200);
+      }
+    })();
+  </script>
+</body>
+</html>
